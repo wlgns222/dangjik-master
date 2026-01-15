@@ -1,2 +1,2 @@
 # dangjik-master
-all haengbogwan's dream
+haengbogwan's dream
