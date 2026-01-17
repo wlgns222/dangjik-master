@@ -122,7 +122,7 @@ year, month = map(int, input().split())
 date_list = [day.strftime("%m-%d") for week in calendar.Calendar().monthdatescalendar(year, month) for day in week if day.month == month]
 
 date_hash = ChainingHashTable(40)
-duty_types = ["위병부조장"] + [f"CCTV_{i}초" for i in range(1,7)] + [f"불침번_{i}초" for i in range(1,6)] + ["초병_1조", "초병_2조", "식기"]
+duty_types = ["위병부조장"] + [f"CCTV{i}" for i in range(1,7)] + [f"불침번{i}" for i in range(1,6)] + ["초병_1조", "초병_2조", "식기"]
 
 # 날짜별 초기화 및 열외자 등록
 for day in date_list:
