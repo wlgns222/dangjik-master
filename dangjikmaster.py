@@ -1,69 +1,54 @@
+import csv
 import calendar
 from datetime import date
 
-#--- [자료구조 정의] ---
-# 1. 원형 리스트 및 포인터 정의
+# --- [자료구조 정의] ---
 class Circular_List:
     def __init__(self):
         self.__c_list = []
-
     def append(self, x):
         self.__c_list.append(x)
-
     def get_at(self, idx):
         if len(self.__c_list) == 0: return None
-        idx = idx % len(self.__c_list)
-        return self.__c_list[idx]
-
+        return self.__c_list[idx % len(self.__c_list)]
     def length(self):
         return len(self.__c_list)
 
 class List_Pointer:
-    def __init__(self, p_list: Circular_List, idx):
+    def __init__(self, p_list, idx):
         self.__idx = idx
         self.__p_list = p_list
-
     def get_val(self):
         temp = self.__p_list.get_at(self.__idx)
         self.__idx += 1
         return temp
 
-# 2. 체이닝 해시 테이블 정의
 class ChainingHashTable:
     def __init__(self, size=10):
         self.size = size
         self.table = [[] for _ in range(self.size)]
-
     def _hash_function(self, key):
         return hash(key) % self.size
-
     def set(self, key, value):
         index = self._hash_function(key)
-        bucket = self.table[index]
-        for i, (k, v) in enumerate(bucket):
+        for i, (k, v) in enumerate(self.table[index]):
             if k == key:
-                bucket[i] = (key, value)
+                self.table[index][i] = (key, value)
                 return
-        bucket.append((key, value))
-
+        self.table[index].append((key, value))
     def get(self, key):
         index = self._hash_function(key)
-        bucket = self.table[index]
-        for k, v in bucket:
-            if k == key:
-                return v
+        for k, v in self.table[index]:
+            if k == key: return v
         return None
 
-# --- [로직 보조 함수 ] ---
-
-#마지막 근무자 군번 찾기
+# --- [로직 보조 함수] ---
 def get_start_index(c_list, last_sn):
+    if not last_sn: return 0
     for i in range(c_list.length()):
-        if c_list.get_at(i) == last_sn:
-            return i + 1
-    return 0 # 못 찾으면 처음부터
+        if c_list.get_at(i) == last_sn: return i + 1
+    return 0
 
-#당일 근무에 투입 안된 인원 추출
 def get_next_available(ptr, assigned_set):
     while True:
         sn = ptr.get_val()
@@ -71,24 +56,34 @@ def get_next_available(ptr, assigned_set):
             assigned_set.add(sn)
             return sn
 
-# CSV 결과 출력 기능 (군번 -> 이름 변환 적용)
+def is_date_in_range(target, start, end):
+    return (start <= target) and (target <= end)
+
 def get_name(sn):
+    if not sn: return ""
+    if isinstance(sn, list):
+        if not sn: return ""
+        sn = sn[0]
     if sn == "72사단": return sn
     info = worker_info_map.get(sn)
     return info['이름'] if info else sn
 
-# 여러 명일 경우 처리용
-def get_names(sn_list_str):
-    if "72사단" in sn_list_str: return sn_list_str
-    sns = sn_list_str.split(', ')
-    return ", ".join([get_name(sn) for sn in sns])
-
+def get_names(sn_input):
+    if not sn_input: return ""
+    sns = sn_input if isinstance(sn_input, list) else [sn_input]
+    names = []
+    for sn in sns:
+        if sn == "72사단": names.append(sn)
+        else:
+            info = worker_info_map.get(sn)
+            names.append(info['이름'] if info else sn)
+    return ", ".join(names)
 
 # --- [메인 로직 실행] ---
 
-# 1. 데이터 로드 및 정보 매핑
+# 1. 데이터 로드
 worker_data = []
-worker_info_map = ChainingHashTable(60)
+worker_info_map = ChainingHashTable(100)
 with open('./database.csv', 'r', encoding='utf-8-sig') as f:
     reader = csv.DictReader(f)
     for row in reader:
@@ -108,11 +103,15 @@ for w in worker_data[mid:]: c_list_jr.append(w['군번'])
 # 3. 마지막 근무자 입력 및 포인터 설정
 print("--- 마지막 근무자 군번을 입력하세요 (없으면 엔터) ---")
 last_sub = input("위병부조장 마지막 인원: ")
+last_cctv = input("CCTV 마지막 인원: ")
+last_night = input("불침번 마지막 인원: ")
 last_sr = input("선임초병 마지막 인원: ")
 last_jr = input("후임초병 마지막 인원: ")
 last_dish = input("식기 마지막 인원 (3명 중 가장 마지막): ")
 
 ptr_sub_guard = List_Pointer(c_list_all, get_start_index(c_list_all, last_sub))
+ptr_cctv = List_Pointer(c_list_all, get_start_index(c_list_all, last_cctv))
+ptr_night = List_Pointer(c_list_all, get_start_index(c_list_all, last_night))
 ptr_sr_sentinel = List_Pointer(c_list_sr, get_start_index(c_list_sr, last_sr))
 ptr_jr_sentinel = List_Pointer(c_list_jr, get_start_index(c_list_jr, last_jr))
 ptr_dish = List_Pointer(c_list_all, get_start_index(c_list_all, last_dish))
@@ -123,90 +122,57 @@ year, month = map(int, input().split())
 date_list = [day.strftime("%m-%d") for week in calendar.Calendar().monthdatescalendar(year, month) for day in week if day.month == month]
 
 date_hash = ChainingHashTable(40)
-dish_skip_count = 0
+duty_types = ["위병부조장"] + [f"CCTV_{i}초" for i in range(1,7)] + [f"불침번_{i}초" for i in range(1,6)] + ["초병_1조", "초병_2조", "식기"]
 
+# 날짜별 초기화 및 열외자 등록
 for day in date_list:
-    today_duty = ChainingHashTable(10)
+    today_duty = ChainingHashTable(20)
     today_duty.set("열외", [])
-    today_duty.set("위병부조장", [])
-    today_duty.set("초병_오전", [])
-    today_duty.set("초병_오후", [])
-    today_duty.set("식기", [])
-    today_duty.set(day, today_duty)
-
-ot_schedule_list = []
-for worker in worker_data:
-    if worker['열외일정'] != 'None':
-        ot_schedule_list.append(worker)
-
-def is_date_in_range(target, start, end): return (start <= target) and (target <= end)
-
-#해시 테이블에 열외자 추가
-for day in date_list:
-    for worker in ot_schedule_list:
-        start, end = worker['열외일정'].split('~')
-        if is_date_in_range(day, start, end):
-            date_hash.get(day).get('열외').append(worker['군번'])
-    
-
-for day in date_list:
-    assigned_today = set() # 중요: 당일 중복 방지용 셋
-    ot_schedule_set = set() #당일 열외 일정 
-
-    today_duty = date_hash.get(day)
-    for x in today_duty.get('열외') : ot_schedule_set.add(x)
-    assigned_today = assigned_today.union(ot_schedule_set)  #당일 근무자, 열외자 합집합
-
-    # 배정 순서: 위병부조장 -> 초병 -> 식기 (우선순위 순서대로)
-    
-    # 1. 위병부조장 (1명)
-    today_duty.set("위병부조장", get_next_available(ptr_sub_guard, assigned_today))
-    
-    # 2. 초병 (오전/오후 각 2명)
-    sn_sr_am = get_next_available(ptr_sr_sentinel, assigned_today)
-    sn_jr_am = get_next_available(ptr_jr_sentinel, assigned_today)
-    today_duty.get("초병_오전").append(sn_sr_am)
-    today_duty.get("초병_오전").append(sn_jr_am)
-    
-    sn_sr_pm = get_next_available(ptr_sr_sentinel, assigned_today)
-    sn_jr_pm = get_next_available(ptr_jr_sentinel, assigned_today)
-    today_duty.get("초병_오전").append(sn_sr_pm)
-    today_duty.get("초병_오전").append(sn_jr_pm)
-    
-    # 3. 식기 (5일 주기)
-    dish_skip_count += 1
-    if dish_skip_count % 5 == 0:
-        today_duty.get("식기").append('72사단')
-    else:
-        d1 = get_next_available(ptr_dish, assigned_today)
-        d2 = get_next_available(ptr_dish, assigned_today)
-        d3 = get_next_available(ptr_dish, assigned_today)
-        today_duty.get("식기").append(d1)
-        today_duty.get("식기").append(d2)
-        today_duty.get("식기").append(d3)
-    
+    for worker in worker_data:
+        if worker['열외일정'] != 'None':
+            start, end = worker['열외일정'].split('~')
+            if is_date_in_range(day, start, end):
+                today_duty.get("열외").append(worker['군번'])
     date_hash.set(day, today_duty)
 
-# 5. 출력 함수 정의
+dish_skip_count = 0
+for day in date_list:
+    today_duty = date_hash.get(day)
+    assigned_today = set(today_duty.get('열외'))
 
-# [기존 방식] 날짜별 근무자 나열 (날짜가 행, 근무명이 열)
+    # 1. 위병부조장 (1명)
+    today_duty.set("위병부조장", [get_next_available(ptr_sub_guard, assigned_today)])
+    
+    # 2. CCTV (1~6번초, 각 3명)
+    for i in range(1, 7):
+        today_duty.set(f"CCTV{i}", [get_next_available(ptr_cctv, assigned_today) for _ in range(3)])
+
+    # 3. 불침번 (1~5번초, 각 1명)
+    for i in range(1, 6):
+        today_duty.set(f"불침번{i}", [get_next_available(ptr_night, assigned_today)])
+
+    # 4. 초병 (1조, 2조)
+    today_duty.set("초병_1조", [get_next_available(ptr_sr_sentinel, assigned_today), get_next_available(ptr_jr_sentinel, assigned_today)])
+    today_duty.set("초병_2조", [get_next_available(ptr_sr_sentinel, assigned_today), get_next_available(ptr_jr_sentinel, assigned_today)])
+    
+    # 5. 식기 (5일 주기)
+    dish_skip_count += 1
+    if dish_skip_count % 5 == 0:
+        today_duty.set("식기", ['72사단'])
+    else:
+        today_duty.set("식기", [get_next_available(ptr_dish, assigned_today) for _ in range(3)])
+
+# 5. 출력 함수 정의
 def export_by_date(date_list, date_hash, filename="result_by_date.csv"):
-    headers = ["날짜", "위병부조장", "초병_오전", "초병_오후", "식기"]
+    headers = ["날짜"] + duty_types
     with open(filename, 'w', newline='', encoding='utf-8-sig') as f:
         writer = csv.writer(f)
         writer.writerow(headers)
         for day in date_list:
             res = date_hash.get(day)
-            row = [
-                day,
-                get_name(res.get("위병부조장")),
-                get_names(res.get("초병_오전")),
-                get_names(res.get("초병_오후")),
-                get_names(res.get("식기"))
-            ]
+            row = [day] + [get_names(res.get(h)) for h in duty_types]
             writer.writerow(row)
 
-# [방식 1] 인원별 스케줄 (이름이 행, 날짜가 열) - 행보관님 스타일
 def export_by_person(date_list, date_hash, worker_data, filename="result_by_person.csv"):
     headers = ["이름"] + date_list
     with open(filename, 'w', newline='', encoding='utf-8-sig') as f:
@@ -218,8 +184,7 @@ def export_by_person(date_list, date_hash, worker_data, filename="result_by_pers
             for day in date_list:
                 today_res = date_hash.get(day)
                 my_duty = ""
-                # 해당 날짜에 내 군번이 포함된 근무 찾기
-                for k in ["위병부조장", "초병_오전", "초병_오후", "식기"]:
+                for k in duty_types:
                     val = today_res.get(k)
                     if val and sn in val:
                         my_duty = k
@@ -227,9 +192,7 @@ def export_by_person(date_list, date_hash, worker_data, filename="result_by_pers
                 row.append(my_duty)
             writer.writerow(row)
 
-# [방식 2] 근무별 날짜 나열 (근무명이 행, 날짜가 열) - 행렬 반전
 def export_by_duty(date_list, date_hash, filename="result_by_duty.csv"):
-    duty_types = ["위병부조장", "초병_오전", "초병_오후", "식기"]
     headers = ["근무항목"] + date_list
     with open(filename, 'w', newline='', encoding='utf-8-sig') as f:
         writer = csv.writer(f)
@@ -242,15 +205,14 @@ def export_by_duty(date_list, date_hash, filename="result_by_duty.csv"):
                 row.append(get_names(val))
             writer.writerow(row)
 
-# 6. 함수 호출 및 실행
-
-export_by_date(date_list, date_hash)      # 기존 방식
-export_by_person(date_list, date_hash, worker_data) # 인원별
-export_by_duty(date_list, date_hash)      # 근무별
+# 6. 실행
+export_by_date(date_list, date_hash)
+export_by_person(date_list, date_hash, worker_data)
+export_by_duty(date_list, date_hash)
 
 print("\n" + "="*40)
-print("✅ 모든 형태의 근무표 생성이 완료되었습니다!")
-print("1. result_by_date.csv   (날짜별 현황)")
-print("2. result_by_person.csv (개인별 스케줄)")
-print("3. result_by_duty.csv   (근무별 순번)")
+print("✅ 근무표 생성 완료!")
+print("1. result_by_date.csv")
+print("2. result_by_person.csv")
+print("3. result_by_duty.csv")
 print("="*40)
