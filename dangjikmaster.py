@@ -165,21 +165,25 @@ for day in date_list:
     # 2. 초병 (오전/오후 각 2명)
     sn_sr_am = get_next_available(ptr_sr_sentinel, assigned_today)
     sn_jr_am = get_next_available(ptr_jr_sentinel, assigned_today)
-    today_duty.set("초병_오전", f"{sn_sr_am}, {sn_jr_am}")
+    today_duty.get("초병_오전").append(sn_sr_am)
+    today_duty.get("초병_오전").append(sn_jr_am)
     
     sn_sr_pm = get_next_available(ptr_sr_sentinel, assigned_today)
     sn_jr_pm = get_next_available(ptr_jr_sentinel, assigned_today)
-    today_duty.set("초병_오후", f"{sn_sr_pm}, {sn_jr_pm}")
+    today_duty.get("초병_오전").append(sn_sr_pm)
+    today_duty.get("초병_오전").append(sn_jr_pm)
     
     # 3. 식기 (5일 주기)
     dish_skip_count += 1
     if dish_skip_count % 5 == 0:
-        today_duty.set("식기", "72사단")
+        today_duty.get("식기").append('72사단')
     else:
         d1 = get_next_available(ptr_dish, assigned_today)
         d2 = get_next_available(ptr_dish, assigned_today)
         d3 = get_next_available(ptr_dish, assigned_today)
-        today_duty.set("식기", f"{d1}, {d2}, {d3}")
+        today_duty.get("식기").append(d1)
+        today_duty.get("식기").append(d2)
+        today_duty.get("식기").append(d3)
     
     date_hash.set(day, today_duty)
 
