@@ -1,4 +1,3 @@
-import csv
 import calendar
 from datetime import date
 
@@ -78,7 +77,7 @@ def get_name(sn):
     info = worker_info_map.get(sn)
     return info['이름'] if info else sn
 
-# 여러 명일 경우 (예: 식기 3명) 처리용
+# 여러 명일 경우 처리용
 def get_names(sn_list_str):
     if "72사단" in sn_list_str: return sn_list_str
     sns = sn_list_str.split(', ')
@@ -128,8 +127,36 @@ dish_skip_count = 0
 
 for day in date_list:
     today_duty = ChainingHashTable(10)
-    assigned_today = set() # 중요: 당일 중복 방지용 셋
+    today_duty.set("열외", [])
+    today_duty.set("위병부조장", [])
+    today_duty.set("초병_오전", [])
+    today_duty.set("초병_오후", [])
+    today_duty.set("식기", [])
+    today_duty.set(day, today_duty)
+
+ot_schedule_list = []
+for worker in worker_data:
+    if worker['열외일정'] != 'None':
+        ot_schedule_list.append(worker)
+
+def is_date_in_range(target, start, end): return (start <= target) and (target <= end)
+
+#해시 테이블에 열외자 추가
+for day in date_list:
+    for worker in ot_schedule_list:
+        start, end = worker['열외일정'].split('~')
+        if is_date_in_range(day, start, end):
+            date_hash.get(day).get('열외').append(worker['군번'])
     
+
+for day in date_list:
+    assigned_today = set() # 중요: 당일 중복 방지용 셋
+    ot_schedule_set = set() #당일 열외 일정 
+
+    today_duty = date_hash.get(day)
+    for x in today_duty.get('열외') : ot_schedule_set.add(x)
+    assigned_today = assigned_today.union(ot_schedule_set)  #당일 근무자, 열외자 합집합
+
     # 배정 순서: 위병부조장 -> 초병 -> 식기 (우선순위 순서대로)
     
     # 1. 위병부조장 (1명)
