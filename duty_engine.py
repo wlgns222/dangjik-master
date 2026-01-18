@@ -7,9 +7,8 @@ from data_structures import ChainingHashTable, Circular_List, List_Pointer
 worker_info_map = ChainingHashTable(100)
 
 # --- [로직 보조 함수] ---
-def is_date_in_range(target_md, start_md, end_md):
-    """MM-DD 형식의 날짜 범위를 체크"""
-    return (start_md <= target_md) and (target_md <= end_md)
+def is_date_in_range(target_date, start_date, end_date):
+    return start_date <= target_date <= end_date
 
 def get_start_index(c_list, last_sn):
     if not last_sn: return 0
@@ -18,21 +17,12 @@ def get_start_index(c_list, last_sn):
     return 0
 
 def get_next_available(ptr, assigned_set, duty_type=None):
-    """
-    assigned_set에 있거나, 보직별 고정 제외자면 건너뛰고 다음 인원 반환
-    """
     while True:
         sn = ptr.get_val()
         info = worker_info_map.get(sn)
         
-        # 1. 당일 이미 배정되었거나 열외인 인원 체크
         if sn in assigned_set:
             continue
-            
-        # 2. 고정 제외 보직 체크 (예: 허리디스크로 초병 제외 등)
-        if info and info.get('고정제외보직'):
-            if duty_type and duty_type in info['고정제외보직']:
-                continue
                 
         assigned_set.add(sn)
         return sn
@@ -69,6 +59,7 @@ def load_all_data(worker_file, exception_file):
     return worker_data, exceptions
 
 # --- [출력 관련 함수] ---
+
 def export_results(date_list, date_hash, worker_data, duty_types):
     # 1. 날짜별 현황
     with open("result_by_date.csv", 'w', newline='', encoding='utf-8-sig') as f:
@@ -78,7 +69,6 @@ def export_results(date_list, date_hash, worker_data, duty_types):
             res = date_hash.get(day)
             row = [day] + [get_names(res.get(h)) for h in duty_types]
             writer.writerow(row)
-
     # 2. 인원별 스케줄 (행보관님 스타일)
     with open("result_by_person.csv", 'w', newline='', encoding='utf-8-sig') as f:
         writer = csv.writer(f)
