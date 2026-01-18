@@ -1,5 +1,5 @@
 # **당직마스터**
 
-## project **Dangjik-Master**
+project **Dangjik-Master**
 ---
 본 프로젝트는 군 복무 중 개발한 시스템으로 부대 내 인원과 열외 정보를 바탕으로 근무표를 생성하는 시스템이다.
