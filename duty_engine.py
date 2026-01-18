@@ -58,10 +58,10 @@ def load_all_data(worker_file, exception_file):
             
     return worker_data, exceptions
 
-# --- [출력 관련 함수] ---
+# --- [출력 함수] ---
 
 def export_results(date_list, date_hash, worker_data, duty_types):
-    # 1. 날짜별 현황
+    # 1. 날짜별
     with open("result_by_date.csv", 'w', newline='', encoding='utf-8-sig') as f:
         writer = csv.writer(f)
         writer.writerow(["날짜"] + duty_types)
@@ -69,7 +69,7 @@ def export_results(date_list, date_hash, worker_data, duty_types):
             res = date_hash.get(day)
             row = [day] + [get_names(res.get(h)) for h in duty_types]
             writer.writerow(row)
-    # 2. 인원별 스케줄 (행보관님 스타일)
+    # 2. 인원별
     with open("result_by_person.csv", 'w', newline='', encoding='utf-8-sig') as f:
         writer = csv.writer(f)
         writer.writerow(["이름"] + date_list)
