@@ -7,8 +7,8 @@ from duty_engine import (
 
 def main():
     # 1. 데이터 로드
-    # worker_list.csv: 군번,이름,전입일,전역일,고정제외보직
-    # exception_list.csv: 군번,시작일,종료일,사유
+    # worker_list.csv
+    # exception_list.csv
     try:
         worker_data, exceptions = load_all_data('./worker_list.csv', './exception_list.csv')
     except FileNotFoundError as e:
@@ -57,16 +57,11 @@ def main():
     dish_skip_count = 0
     for day in date_list:
         today_duty = ChainingHashTable(20)
-        for d in duty_types + ["열외"]: today_duty.set(d, [])
+        for d in duty_types : today_duty.set(d, [])
         
-        # 열외자 등록
         assigned_today = set()
-        for ex in exceptions:
-            if is_date_in_range(day, ex['시작일'], ex['종료일']):
-                today_duty.get("열외").append(ex['군번'])
-                assigned_today.add(ex['군번'])
         
-        # --- 배정 순서 반영 ---
+        # --- 배정 ---
         
         # 1. 위병부조장
         today_duty.get("위병부조장").append(get_next_available(ptr_sub_guard, assigned_today, "위병부조장"))
