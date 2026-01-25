@@ -9,8 +9,8 @@
 + 추후 '1호차 운전병' 'PX병'등 특수하게 근무 들어가는 보직 처리
 """
 
-from data_structures import ChainingHashTable
-from date import is_date_in_range
+from src.data_structures import ChainingHashTable
+from src.date import is_date_in_range
 
 def global_filter(date_hash, date_list, exceptions):
     #1. 전역자 필터링: 
