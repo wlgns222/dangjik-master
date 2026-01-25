@@ -9,33 +9,31 @@
 + 추후 '1호차 운전병' 'PX병'등 특수하게 근무 들어가는 보직 처리
 """
 
-# ---------------------------------------------------------
-# CASE 1. 전역 및 열외자 제외
-# 목적: 루프 시작 전, 당일 모든 근무 배정에서 제외할 인원을 선별
-# ---------------------------------------------------------
+from data_structures import ChainingHashTable
+from date import is_date_in_range
 
-def global_filter(day, worker_data, exceptions):
-    
+def global_filter(date_hash, date_list, exceptions):
     #1. 전역자 필터링: 
-    
     #2. 열외 명단(exception_list) 필터링:
-    
-    pass
+    exception_list = []
+    for e in exceptions:
+        exp_info = (e['군번'], e['시작일'], e['종료일'], e['사유'])
+        exception_list.append(exp_info)
 
+    for day in date_list:
+        today_duty = date_hash.get(day)
+        for exp_worker in exception_list:
+            id_tag, from_date, to_date, exp_type = exp_worker
+            if is_date_in_range(day, from_date, to_date):
+                today_duty.get(exp_type).append(id_tag)
 
-# ---------------------------------------------------------
-# CASE 2. 근무별 제외 
-# 목적: 부대에는 있지만 특정 근무(예: 식기, CCTV) 적합성 여부를 판단
-# ---------------------------------------------------------
 
 def task_filter(sn, duty_type, worker_info_map):
-
     #가능근무 데이터(예: '11101') 기반 필터링:
-
     #순서는 위병부조장,식기,불침번,초병,CCTV로 고정
-
-    pass
-
+    #호출함수: get_next_available()
+    work_bit = worker_info_map.get(sn)['가능근무']
+    return work_bit[duty_type] == '0'
 
 # ---------------------------------------------------------
 # CASE 3. 날짜별 보직 활성화 체크
