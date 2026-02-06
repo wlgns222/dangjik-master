@@ -50,7 +50,6 @@ def get_all_exp(exceptions):
     return list(exp_set)
 
 
-
 # --- [데이터 로드 함수] ---
 def load_all_data(worker_file, exception_file):
     worker_data = []
