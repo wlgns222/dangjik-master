@@ -1,0 +1,90 @@
+:root {
+    /* 사용자 제안 핵심 컬러: Military Olive */
+    --step-active: #536349; 
+    --step-active-hover: #3e4b37;
+    --step-todo: #cbd5e1;
+    
+    /* 배경 및 카드 톤: Slate 계열로 묵직하게 설정 */
+    --bg-color: #e2e8f0;
+    --card-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+body { 
+    font-family: 'Pretendard', -apple-system, sans-serif; 
+    background: var(--bg-color); 
+    display: flex; justify-content: center; align-items: center; 
+    min-height: 100vh; margin: 0; 
+    color: #1e293b;
+}
+
+/* 메인 카드: 견고한 장갑차 느낌의 모서리와 깊이감 */
+.wizard-card { 
+    background: #ffffff; width: 90%; max-width: 480px; 
+    border-radius: 12px; box-shadow: var(--card-shadow); 
+    padding: 48px; 
+    border-top: 8px solid var(--step-active); /* 상단 포인트 바 */
+}
+
+/* Progress Bar: 절차적 명확성 강조 */
+.progress-stepper { display: flex; justify-content: space-between; margin-bottom: 48px; position: relative; }
+.step-dot { 
+    width: 40px; height: 40px; background: white; 
+    border: 2px solid var(--step-todo); border-radius: 50%; 
+    display: flex; align-items: center; justify-content: center; 
+    font-weight: 800; color: #64748b; z-index: 1; transition: all 0.3s ease; 
+}
+.step-dot.active { 
+    background: var(--step-active); color: white; border-color: var(--step-active);
+    box-shadow: 0 0 12px rgba(83, 99, 73, 0.4); transform: scale(1.1);
+}
+.step-line { 
+    position: absolute; top: 20px; left: 0; height: 2px; 
+    background: var(--step-todo); width: 100%; z-index: 0; 
+}
+
+/* Step Contents */
+.step-content { display: none; animation: fadeInSlide 0.4s ease-out; }
+.step-content.active { display: block; }
+
+h2 { margin-top: 0; font-size: 26px; font-weight: 900; color: #0f172a; letter-spacing: -0.05em; }
+p { color: #475569; font-size: 15px; margin-bottom: 32px; line-height: 1.6; }
+
+/* Input 스타일: 시인성이 높은 깔끔한 박스 */
+.input-box { margin-bottom: 24px; }
+label { display: block; font-size: 13px; font-weight: 800; color: #334155; margin-bottom: 8px; text-transform: uppercase; }
+input { 
+    width: 100%; padding: 14px 16px; border: 1px solid #94a3b8; 
+    border-radius: 6px; box-sizing: border-box; font-size: 15px;
+    transition: all 0.2s; background-color: #f1f5f9;
+}
+input:focus { 
+    outline: none; border-color: var(--step-active); background-color: white;
+    box-shadow: 0 0 0 3px rgba(83, 99, 73, 0.2); 
+}
+
+/* 버튼 그룹: 묵직한 신뢰감 */
+.btn-group { display: flex; gap: 12px; margin-top: 40px; }
+button { 
+    flex: 1; padding: 16px; border-radius: 6px; border: none; 
+    font-size: 16px; font-weight: 800; cursor: pointer; 
+    transition: all 0.2s; text-transform: uppercase;
+}
+.btn-next { background: var(--step-active); color: white; }
+.btn-next:hover { background: var(--step-active-hover); transform: translateY(-1px); }
+.btn-prev { background: #cbd5e1; color: #1e293b; }
+.btn-prev:hover { background: #94a3b8; }
+button:active { transform: scale(0.97); }
+
+/* 로그 창: 야간 투시경 느낌의 다크 모드 */
+#logWindow { 
+    background: #1a1c19; color: #a3b39c; padding: 20px; 
+    border-radius: 8px; font-family: 'JetBrains Mono', monospace; 
+    font-size: 13px; min-height: 140px; margin-bottom: 20px;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.5); line-height: 1.6;
+    border-left: 4px solid var(--step-active);
+}
+
+@keyframes fadeInSlide { 
+    from { opacity: 0; transform: translateY(8px); } 
+    to { opacity: 1; transform: translateY(0); } 
+}

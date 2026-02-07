@@ -1,81 +1,103 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>부대 근무 배정 시스템 - 관리자 모드</title>
-    <style>
-        :root { --primary-color: #2c3e50; --accent-color: #27ae60; }
-        body { font-family: 'Pretendard', sans-serif; background-color: #f4f7f6; color: var(--primary-color); padding: 40px; }
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        h1 { border-bottom: 2px solid var(--primary-color); padding-bottom: 10px; text-align: center; }
-        .section { margin-bottom: 25px; padding: 15px; border: 1px solid #e0e0e0; border-radius: 8px; }
-        .section h2 { font-size: 1.2rem; margin-top: 0; color: #2980b9; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .full-width { grid-column: span 2; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9rem; }
-        input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background-color: var(--primary-color); color: white; border: none; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        button:hover { background-color: #34495e; transform: translateY(-2px); }
-        .status-log { margin-top: 20px; padding: 10px; background: #eee; font-family: monospace; font-size: 0.85rem; height: 100px; overflow-y: auto; border-radius: 4px; }
-    </style>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Duty Master Wizard</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
 <body>
 
-<div class="container">
-    <h1>🎖️ 근무 배정 관제 시스템</h1>
-
-    <div class="section">
-        <h2>1. 데이터 동기화 (CSV 업로드)</h2>
-        <div class="grid">
-            <div>
-                <label>병사 명단 (worker_list.csv)</label>
-                <input type="file" id="workerFile" accept=".csv">
-            </div>
-            <div>
-                <label>열외 일정 (exception_list.csv)</label>
-                <input type="file" id="exceptionFile" accept=".csv">
-            </div>
-        </div>
+<div class="wizard-card">
+    <div class="progress-stepper">
+        <div class="step-line"></div>
+        <div class="step-dot active" id="dot-1">1</div>
+        <div class="step-dot" id="dot-2">2</div>
+        <div class="step-dot" id="dot-3">3</div>
+        <div class="step-dot" id="dot-4">4</div>
     </div>
 
-    <div class="section">
-        <h2>2. 배정 기간 및 기준일 설정</h2>
-        <div class="grid">
-            <div>
-                <label>배정 시작일</label>
-                <input type="date" id="startDate">
+    <form id="wizardForm">
+        <div class="step-content active" id="step-1">
+            <h2>데이터 소스 로드</h2>
+            <p>병사 명단과 열외 일정 CSV 파일을 선택해 주세요.</p>
+            <div class="input-box">
+                <label>병사 명단</label>
+                <input type="file" id="workerFile" accept=".csv">
             </div>
-            <div>
-                <label>배정 종료일</label>
-                <input type="date" id="endDate">
+            <div class="input-box">
+                <label>열외 일정</label>
+                <input type="file" id="exceptionFile" accept=".csv">
             </div>
-            <div class="full-width">
+            <div class="btn-group">
+                <button type="button" class="btn-next" onclick="moveStep(2)">다음</button>
+            </div>
+        </div>
+
+        <div class="step-content" id="step-2">
+            <h2>배정 주기 설정</h2>
+            <p>근무표를 생성할 기간과 식기 기준일을 입력하세요.</p>
+            <div style="display: flex; gap: 12px;">
+                <div class="input-box" style="flex:1;">
+                    <label>시작일</label>
+                    <input type="date" id="startDate">
+                </div>
+                <div class="input-box" style="flex:1;">
+                    <label>종료일</label>
+                    <input type="date" id="endDate">
+                </div>
+            </div>
+            <div class="input-box">
                 <label>72사단 마지막 식기 수행일</label>
                 <input type="date" id="ldDate">
             </div>
+            <div class="btn-group">
+                <button type="button" class="btn-prev" onclick="moveStep(1)">이전</button>
+                <button type="button" class="btn-next" onclick="moveStep(3)">다음으로</button>
+            </div>
         </div>
-    </div>
 
-    <div class="section">
-        <h2>3. 마지막 근무자 입력 (군번)</h2>
-        <div class="grid">
-            <div><label>위병부조장</label><input type="text" id="lastSub" placeholder="ex) 24-76012345"></div>
-            <div><label>식기</label><input type="text" id="lastDish" placeholder="ex) 25-76012345"></div>
-            <div><label>불침번</label><input type="text" id="lastNight" placeholder="ex) 24-76012345"></div>
-            <div><label>선임초병</label><input type="text" id="lastSr" placeholder="ex) 24-76012345"></div>
-            <div><label>후임초병</label><input type="text" id="lastJr" placeholder="ex) 25-76012345"></div>
-            <div><label>CCTV</label><input type="text" id="lastCctv" placeholder="ex) 25-76012345"></div>
+        <div class="step-content" id="step-3">
+            <h2>근무 포인터 동기화</h2>
+            <p>각 보직별 마지막 근무자의 군번을 입력하세요.</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <input type="text" id="lastSub" placeholder="위병부조장">
+                <input type="text" id="lastDish" placeholder="식기">
+                <input type="text" id="lastNight" placeholder="불침번">
+                <input type="text" id="lastSr" placeholder="선임초병">
+                <input type="text" id="lastJr" placeholder="후임초병">
+                <input type="text" id="lastCctv" placeholder="CCTV">
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn-prev" onclick="moveStep(2)">이전</button>
+                <button type="button" class="btn-next" onclick="moveStep(4)">최종 확인</button>
+            </div>
         </div>
-    </div>
 
-    <button id="runButton">🚀 근무표 생성 엔진 가동</button>
-
-    <div class="status-log" id="logWindow">
-        > 시스템 대기 중...
-    </div>
+        <div class="step-content" id="step-4">
+            <h2>엔진 가동 준비 완료</h2>
+            <p>모든 설정이 완료되었습니다. 배정 엔진을 실행할까요?</p>
+            <div id="logWindow">
+                > Ready to Deploy...
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn-prev" onclick="moveStep(3)">이전</button>
+                <button type="button" class="btn-next" id="runButton" style="background:#059669;">RUN ENGINE</button>
+            </div>
+        </div>
+    </form>
 </div>
 
+<script>
+    function moveStep(step) {
+        document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+        document.getElementById('step-' + step).classList.add('active');
+        document.querySelectorAll('.step-dot').forEach((dot, idx) => {
+            if (idx + 1 <= step) dot.classList.add('active');
+            else dot.classList.remove('active');
+        });
+    }
+</script>
 <script src="script.js"></script>
 </body>
 </html>
