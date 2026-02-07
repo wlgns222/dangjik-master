@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dangjik Maseter</title>
+        <title>Dangjik Master</title>
         <link rel="stylesheet" href="style.css">
     </head>
 <body>
@@ -18,7 +18,18 @@
     </div>
 
     <form id="wizardForm">
-        <div class="step-content active" id="step-1">
+        <div class="step-content active" id="step-0">
+            <div style="text-align: center;">
+                <h2 style="font-size: 40x; margin-bottom: 8px;">당직 마스터</h2>
+                <p>근무 자동 배정 시스템</p>
+                
+                <div class="btn-group" style="flex-direction: column;">
+                    <button type="button" class="btn-next" onclick="moveStep(1)">시작하기</button>
+                    <button type="button" class="btn-prev">도움말</button>
+                </div>
+            </div>
+        </div>
+        <div class="step-content" id="step-1">
             <h2>데이터 소스 로드</h2>
             <p>병사 명단과 열외 일정 CSV 파일을 선택해 주세요.</p>
             <div class="input-box">
@@ -82,7 +93,7 @@
             </div>
             <div class="btn-group">
                 <button type="button" class="btn-prev" onclick="moveStep(3)">이전</button>
-                <button type="button" class="btn-next" id="runButton" style="background:#059669;">근무표 생성</button>
+                <button type="button" class="btn-next" id="runButton">근무표 생성</button>
             </div>
         </div>
     </form>
