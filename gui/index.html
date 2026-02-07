@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ko">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dangjik Master</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dangjik Master</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
 
 <div class="wizard-card">
@@ -20,20 +20,20 @@
     <form id="wizardForm">
         <div class="step-content active" id="step-0">
             <div style="text-align: center;">
-                <h2 style="font-size: 40x; margin-bottom: 8px;">당직 마스터</h2>
+                <h2 style="font-size: 40px; margin-bottom: 8px;">당직 마스터</h2>
                 <p>근무 자동 배정 시스템</p>
-                
                 <div class="btn-group" style="flex-direction: column;">
                     <button type="button" class="btn-next" onclick="moveStep(1)">시작하기</button>
-                    <button type="button" class="btn-prev">도움말</button>
+                    <button type="button" class="btn-prev" onclick="moveStep('help')">도움말</button>
                 </div>
             </div>
         </div>
+
         <div class="step-content" id="step-1">
-            <h2>데이터 소스 로드</h2>
-            <p>병사 명단과 열외 일정 CSV 파일을 선택해 주세요.</p>
+            <h2>인원 및 열외 명부 등록</h2>
+            <p>용사 명단과 열외 일정 CSV 파일을 선택해 주세요.</p>
             <div class="input-box">
-                <label>병사 명단</label>
+                <label>용사 명단</label>
                 <input type="file" id="workerFile" accept=".csv">
             </div>
             <div class="input-box">
@@ -41,12 +41,13 @@
                 <input type="file" id="exceptionFile" accept=".csv">
             </div>
             <div class="btn-group">
+                <button type="button" class="btn-prev" onclick="moveStep(0)">이전</button>
                 <button type="button" class="btn-next" onclick="moveStep(2)">다음</button>
             </div>
         </div>
 
         <div class="step-content" id="step-2">
-            <h2>배정 주기 설정</h2>
+            <h2>근무 배정 기간 설정</h2>
             <p>근무표를 생성할 기간과 식기 기준일을 입력하세요.</p>
             <div style="display: flex; gap: 12px;">
                 <div class="input-box" style="flex:1;">
@@ -59,7 +60,7 @@
                 </div>
             </div>
             <div class="input-box">
-                <label>72사단 마지막 식기 수행일</label>
+                <label>72사단 마지막 식기 당번일</label>
                 <input type="date" id="ldDate">
             </div>
             <div class="btn-group">
@@ -69,7 +70,7 @@
         </div>
 
         <div class="step-content" id="step-3">
-            <h2>근무 포인터 동기화</h2>
+            <h2>마지막 근무자 지정</h2>
             <p>각 보직별 마지막 근무자의 군번을 입력하세요.</p>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                 <input type="text" id="lastSub" placeholder="위병부조장">
@@ -86,29 +87,42 @@
         </div>
 
         <div class="step-content" id="step-4">
-            <h2>엔진 가동 준비 완료</h2>
+            <h2>근무 배정 준비 완료</h2>
             <p>모든 설정이 완료되었습니다. 배정 엔진을 실행할까요?</p>
-            <div id="logWindow">
-                > Ready to Deploy...
-            </div>
+            <div id="logWindow">> Ready to Deploy...</div>
             <div class="btn-group">
                 <button type="button" class="btn-prev" onclick="moveStep(3)">이전</button>
                 <button type="button" class="btn-next" id="runButton">근무표 생성</button>
             </div>
         </div>
     </form>
+
+    <div id="helpContainer" style="display: none;">
+        <div class="help-content active" id="h-step-0">
+            <h2> 데이터 준비 방법</h2>
+            <div class="btn-group">
+                <button type="button" class="btn-prev" onclick="exitHelp()">나가기</button>
+                <button type="button" class="btn-next" onclick="moveHelp(1)">다음</button>
+            </div>
+        </div>
+        <div class="help-content" id="h-step-1">
+            <h2> 프로그램 이용 방법</h2>
+            <div class="btn-group">
+                <button type="button" class="btn-prev" onclick="moveHelp(0)">이전</button>
+                <button type="button" class="btn-next" onclick="moveHelp(2)">다음</button>
+            </div>
+        </div>
+        <div class="help-content" id="h-step-2">
+            <h2> 프로그램 오류시</h2>
+            <div class="btn-group">
+                <button type="button" class="btn-prev" onclick="moveHelp(1)">이전</button>
+                <button type="button" class="btn-next" onclick="exitHelp()">종료</button>
+            </div>
+        </div>
+    </div>
 </div>
 
-<script>
-    function moveStep(step) {
-        document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-        document.getElementById('step-' + step).classList.add('active');
-        document.querySelectorAll('.step-dot').forEach((dot, idx) => {
-            if (idx + 1 <= step) dot.classList.add('active');
-            else dot.classList.remove('active');
-        });
-    }
-</script>
+<script src="ui-controller.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
