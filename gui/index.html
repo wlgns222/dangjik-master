@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Duty Master Wizard</title>
+        <title>Dangjik Maseter</title>
         <link rel="stylesheet" href="style.css">
     </head>
 <body>
@@ -53,7 +53,7 @@
             </div>
             <div class="btn-group">
                 <button type="button" class="btn-prev" onclick="moveStep(1)">이전</button>
-                <button type="button" class="btn-next" onclick="moveStep(3)">다음으로</button>
+                <button type="button" class="btn-next" onclick="moveStep(3)">다음</button>
             </div>
         </div>
 
@@ -63,14 +63,14 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                 <input type="text" id="lastSub" placeholder="위병부조장">
                 <input type="text" id="lastDish" placeholder="식기">
-                <input type="text" id="lastNight" placeholder="불침번">
                 <input type="text" id="lastSr" placeholder="선임초병">
                 <input type="text" id="lastJr" placeholder="후임초병">
+                <input type="text" id="lastNight" placeholder="불침번">
                 <input type="text" id="lastCctv" placeholder="CCTV">
             </div>
             <div class="btn-group">
                 <button type="button" class="btn-prev" onclick="moveStep(2)">이전</button>
-                <button type="button" class="btn-next" onclick="moveStep(4)">최종 확인</button>
+                <button type="button" class="btn-next" onclick="moveStep(4)">다음</button>
             </div>
         </div>
 
@@ -82,7 +82,7 @@
             </div>
             <div class="btn-group">
                 <button type="button" class="btn-prev" onclick="moveStep(3)">이전</button>
-                <button type="button" class="btn-next" id="runButton" style="background:#059669;">RUN ENGINE</button>
+                <button type="button" class="btn-next" id="runButton" style="background:#059669;">근무표 생성</button>
             </div>
         </div>
     </form>
