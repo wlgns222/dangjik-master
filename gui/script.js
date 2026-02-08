@@ -81,9 +81,26 @@ async function runPipeline() {
 
         const result = await response.json();
 
-        if (result.status === "success") {
-            log("🎉 " + result.message);
-            alert("✅ 근무표 생성이 완료되었습니다!\n프로젝트 폴더 내 CSV 파일을 확인하세요.");
+        if (response.ok && result.status === "success") {
+            log("✅ 배정 완료! 파일 다운로드를 시작합니다.");
+        
+            const download = (content, filename) => {
+                const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            };
+        
+            // 서버가 보내준 두 파일을 각각 다운로드
+            if (result.files.byDate) download(result.files.byDate, `근무표_날짜별.csv`);
+            if (result.files.byPerson) download(result.files.byPerson, `근무표_인원별.csv`);
+        
+            alert("🎉 생성이 완료되었습니다! '다운로드' 폴더를 확인하세요.");
         } else {
             throw new Error(result.message);
         }

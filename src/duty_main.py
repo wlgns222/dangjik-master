@@ -1,3 +1,4 @@
+import os
 from .data_structures import Circular_List, List_Pointer, ChainingHashTable
 from .date import get_date_diff, get_custom_date_list
 from .filter import global_filter
@@ -7,12 +8,17 @@ from .duty_engine import (
 )
 
 def duty_generator(start_date, end_date, ld_date, last_workers):
+    # server.py와 동일한 절대 경로 로직 사용
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    root_path = os.path.dirname(current_dir)
 
-    # 1. 데이터 파이프라인 로드
+    worker_path = os.path.join(root_path, "data", "worker_list.csv")
+    exception_path = os.path.join(root_path, "data", "exception_list.csv")
+
     try:
-        worker_data, exceptions = load_all_data('./data/worker_list.csv', './data/exception_list.csv')
-    except FileNotFoundError as e:
-        return f"CRITICAL_ERROR: CSV 파일을 찾을 수 없습니다. ({e})"
+        worker_data, exceptions = load_all_data(worker_path, exception_path)
+    except FileNotFoundError:
+        raise ValueError("업로드된 명단 파일을 찾을 수 없습니다.")
 
     # 2. 인원 분류 및 Circular Queue 최적화
     worker_data.sort(key=lambda x: x['전입일'])

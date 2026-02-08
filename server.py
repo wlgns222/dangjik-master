@@ -5,8 +5,9 @@ import os
 from src.duty_main import duty_generator
 
 # [설계 원칙] 상수(Constant) 선언을 통한 하드코딩 방지
-DATA_DIR = "./data"
-GUI_DIR = "gui"  # 사용자님의 폴더 이름에 맞춰 정의
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "data") # 상대 경로(./data) 대신 절대 경로 사용
+GUI_DIR = "gui"
 
 if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR)
@@ -31,43 +32,54 @@ class DutyServerHandler(http.server.SimpleHTTPRequestHandler):
         print(f"🔍 [GET Request] Searching for: {self.path}")
         return super().do_GET()
 
-    # 2. 데이터 수신 및 연산 요청 처리 (POST)
     def do_POST(self):
-        # [파일 업로드 로직]
         if self.path == '/upload':
+            # 파일 업로드 시 DATA_DIR를 확실히 참조하여 저장
             content_length = int(self.headers['Content-Length'])
-            data = json.loads(self.rfile.read(content_length).decode('utf-8'))
-            file_name = data.get('fileName')
-            content = data.get('content')
+            post_data = json.loads(self.rfile.read(content_length).decode('utf-8'))
+            file_path = os.path.join(DATA_DIR, post_data['fileName'])
+            
+            with open(file_path, 'w', encoding='utf-8-sig') as f:
+                f.write(post_data['content'])
+            self._send_json_response({"status": "success"})
 
-            try:
-                file_path = os.path.join(DATA_DIR, file_name)
-                # utf-8-sig: 엑셀에서 만든 CSV의 한글 깨짐을 방지하는 최적의 인코딩
-                with open(file_path, 'w', encoding='utf-8-sig') as f:
-                    f.write(content)
-                self._send_json_response({"status": "success", "message": f"{file_name} 업로드 완료"})
-            except Exception as e:
-                self._send_json_response({"status": "error", "message": str(e)}, 500)
-
-        # [근무 배정 엔진 가동 로직]
         elif self.path == '/generate':
             content_length = int(self.headers['Content-Length'])
             params = json.loads(self.rfile.read(content_length).decode('utf-8'))
 
             try:
-                # Core Engine 가동 (duty_main.py 내의 함수 호출)
+                # 1. 날짜 역전 기초 검증
+                if params['startDate'] > params['endDate']:
+                    raise ValueError("시작 날짜가 종료 날짜보다 늦습니다.")
+
+                # 2. 엔진 가동
                 result_message = duty_generator(
                     start_date=params['startDate'],
                     end_date=params['endDate'],
                     ld_date=params['ldDate'],
                     last_workers=params['lastWorkers']
                 )
-                self._send_json_response({"status": "success", "message": result_message})
+
+                # 3. [핵심] 생성된 CSV 파일을 읽어서 클라이언트에 전송
+                res_date_path = os.path.join(BASE_DIR, "result_by_date.csv")
+                res_person_path = os.path.join(BASE_DIR, "result_by_date.csv")
+
+                csv_data = {}
+                if os.path.exists(res_date_path):
+                    with open(res_date_path, "r", encoding="utf-8-sig") as f:
+                        csv_data['byDate'] = f.read()
+                
+                if os.path.exists(res_person_path):
+                    with open(res_person_path, "r", encoding="utf-8-sig") as f:
+                        csv_data['byPerson'] = f.read()
+
+                self._send_json_response({
+                    "status": "success", 
+                    "message": result_message,
+                    "files": csv_data # 브라우저가 다운로드할 내용
+                })
             except Exception as e:
                 self._send_json_response({"status": "error", "message": str(e)}, 500)
-        
-        else:
-            self.send_error(404, "API Endpoint Not Found")
 
     def _send_json_response(self, data, status=200):
         self.send_response(status)
@@ -80,7 +92,6 @@ def run_server(port=8000):
     with socketserver.TCPServer(("", port), DutyServerHandler) as httpd:
         print(f"===============================================")
         print(f"🚀 Admin System Active: http://localhost:{port}")
-        print(f"📂 정적 자원 경로: ./{GUI_DIR}/")
         print(f"===============================================")
         httpd.serve_forever()
 
