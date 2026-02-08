@@ -6,9 +6,18 @@
 function moveStep(step) {
     const wizardForm = document.getElementById('wizardForm');
     const helpContainer = document.getElementById('helpContainer');
+    const stepperElement = document.querySelector('.progress-stepper');
 
     // 모든 메인 콘텐츠 비활성화
     document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+
+    // 0. 초기 화면
+    const stepNum = (step === 'help') ? 'help' : Number(step);
+    if (stepNum === 0 || stepNum === 'help') {
+        if (stepperElement) stepperElement.style.display = 'none';
+    } else {
+        if (stepperElement) stepperElement.style.display = 'flex';
+    }
 
     // 1. 도움말 모드(Context Switching)
     if (step === 'help') {
