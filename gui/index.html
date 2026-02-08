@@ -97,100 +97,72 @@
         </div>
     </form>
 
-    <div id="helpContainer" style="display: none;">
+    <div id="helpContainer">
         <div class="help-content active" id="h-step-0">
-            <div style="text-align: left; max-height: 35vh; overflow-y: auto; padding-right: 15px;">
-                <h2 style="border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;"> 데이터 준비</h2>
+            <div class="help-scroll-area">
+                <h2 class="help-title">데이터 준비</h2>
             
-                <div class="info-box" style="margin-top: 15px;">
-                <strong>⚠️ 필수 준수사항</strong>
-                <ul style="font-size: 14px; padding-left: 20px; line-height: 1.8; margin-top: 8px;">
-                    <li>파일 형식: 반드시 <strong>CSV (쉼표로 구분)</strong> (한셀에서 '다른 이름으로 저장')</li>
-                    <li>날짜 형식: <strong>YYYY-MM-DD</strong> (예: 2026-01-01)</li>
-                    <li><strong>군번 일치:</strong> 두 파일의 군번이 정확히 일치해야 동일인물로 인식합니다.</li>
-                </ul>
+                <div class="info-box">
+                    <strong>⚠️ 필수 준수사항</strong>
+                    <ul style="font-size: 14px; padding-left: 20px; line-height: 1.8; margin-top: 8px;">
+                        <li>파일 형식: 반드시 <strong>CSV (쉼표로 구분)</strong> (한셀에서 '다른 이름으로 저장')</li>
+                        <li>날짜 형식: <strong>YYYY-MM-DD</strong> (예: 2026-01-01)</li>
+                        <li>군번 일치: 두 파일의 <strong>군번이 정확히 일치</strong>해야 동일인물로 인식합니다.</li>
+                    </ul>
                 </div>
         
-                <hr style="margin: 25px 0; border: 0; border-top: 1px dashed #cbd5e1;">
+                <hr class="help-hr">
         
-                <section style="margin-bottom: 35px;">
-                <h3 style="border-left: 4px solid #2563eb; padding-left: 10px; margin-bottom: 12px; font-size: 17px;">1. 용사 명단</h3>
-                <p style="font-size: 14px; color: #475569; margin-bottom: 10px;">용사 명단에는 <strong>군번, 이름, 전입일, 전역일, 가능근무</strong>가 포함됩니다.</p>
-                
-                <div class="example-table">
-                    <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 10px;">
+                <section class="help-section">
+                    <h3 class="help-section-h3">1. 용사 명단</h3>
+                    <p class="text-small text-desc">용사 명단에는 <strong>군번, 이름, 전입일, 전역일, 가능근무</strong>가 포함됩니다.</p>
+                    
+                    <table class="example-table">
                         <thead>
-                            <tr style="background: #f1f5f9;">
-                                <th style="border: 1px solid #cbd5e1; padding: 6px;">군번</th>
-                                <th style="border: 1px solid #cbd5e1; padding: 6px;">이름</th>
-                                <th style="border: 1px solid #cbd5e1; padding: 6px;">전입일</th>
-                                <th style="border: 1px solid #cbd5e1; padding: 6px;">전역일</th>
-                                <th style="border: 1px solid #cbd5e1; padding: 6px;">가능근무</th>
+                            <tr>
+                                <th>군번</th><th>이름</th><th>전입일</th><th>전역일</th><th>가능근무</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">25-760003</td>
-                                <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">박필승</td>
-                                <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">2025-01-11</td>
-                                <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">2026-05-11</td>
-                                <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">11111</td>
+                                <td>25-760003</td><td>박필승</td><td>2025-01-11</td><td>2026-05-11</td><td>11111</td>
                             </tr>
                             <tr style="background: #f8fafc;">
-                                <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">25-760053</td>
-                                <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">방수호</td>
-                                <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">2025-09-21</td>
-                                <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">2027-01-21</td>
-                                <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;"><strong>11101</strong></td>
+                                <td>25-760053</td><td>방수호</td><td>2025-09-21</td><td>2027-01-21</td><td><strong>11101</strong></td>
                             </tr>
                         </tbody>
                     </table>
-                </div>
         
-                <div style="background-color: #fefce8; border: 1px solid #eab308; padding: 12px; border-radius: 6px;">
-                    <strong style="color: #854d0e; font-size: 14px;">💡 가능근무 판정법</strong>
-                    <p style="font-size: 13px; line-height: 1.6; margin-top: 5px; color: #713f12;">
-                        순서: <strong>위병부조장 - 식기 - 불침번 - 초병 - CCTV</strong><br>
-                        • 1 : 가능 / 0 불가능<br>
-                        • <strong>박필승(11111):</strong> 모든 근무 가능<br>
-                        • <strong>방수호(11101):</strong> 4번째가 0이므로 <strong>초병 근무 불가</strong>
-                    </p>
-                </div>
+                    <div class="tip-box">
+                        <strong style="color: #854d0e; font-size: 14px;"> 가능근무 판정법</strong>
+                        <p style="font-size: 13px; line-height: 1.6; margin-top: 5px; color: #713f12;">
+                            순서: <strong>위병부조장 - 식기 - 불침번 - 초병 - CCTV</strong><br>
+                            • 1 : 가능 / 0 불가능<br>
+                            • <strong>박필승(11111):</strong> 모든 근무 가능<br>
+                            • <strong>방수호(11101):</strong> 4번째가 0이므로 <strong>초병 근무 불가</strong>
+                        </p>
+                    </div>
                 </section>
         
-                <section style="margin-bottom: 30px;">
-                <h3 style="border-left: 4px solid #ef4444; padding-left: 10px; margin-bottom: 12px; font-size: 17px;">2. 열외 명단</h3>
-                <p style="font-size: 14px; color: #475569; margin-bottom: 10px;">열외 명단에는 <strong>군번, 이름, 시작일, 종료일, 사유</strong>가 포함됩니다.</p>
-        
-                <div class="example-table">
-                    <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                <section class="help-section" style="margin-bottom: 30px;">
+                    <h3 class="help-section-h3" >2. 열외 명단</h3>
+                    <p class="text-small text-desc">열외 명단에는 <strong>군번, 이름, 시작일, 종료일, 사유</strong>가 포함됩니다.</p>
+            
+                    <table class="example-table">
                         <thead>
-                            <tr style="background: #f1f5f9;">
-                                <th style="border: 1px solid #cbd5e1; padding: 6px;">군번</th>
-                                <th style="border: 1px solid #cbd5e1; padding: 6px;">이름</th>
-                                <th style="border: 1px solid #cbd5e1; padding: 6px;">시작일</th>
-                                <th style="border: 1px solid #cbd5e1; padding: 6px;">종료일</th>
-                                <th style="border: 1px solid #cbd5e1; padding: 6px;">사유</th>
+                            <tr>
+                                <th>군번</th><th>이름</th><th>시작일</th><th>종료일</th><th>사유</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">25-760070</td>
-                                <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">백두산</td>
-                                <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">2026-01-01</td>
-                                <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">2026-01-29</td>
-                                <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">신병보호</td>
+                                <td>25-760070</td><td>백두산</td><td>2026-01-01</td><td>2026-01-29</td><td>신병보호</td>
                             </tr>
                             <tr style="background: #f8fafc;">
-                                <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">25-760014</td>
-                                <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">권번개</td>
-                                <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">2026-01-15</td>
-                                <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">2026-01-28</td>
-                                <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">5대기</td>
+                                <td>25-760014</td><td>권번개</td><td>2026-01-15</td><td>2026-01-28</td><td>5대기</td>
                             </tr>
                         </tbody>
                     </table>
-                </div>
                 </section>
             </div>
             <div class="btn-group">
@@ -198,54 +170,52 @@
                 <button type="button" class="btn-next" onclick="moveHelp(1)">다음</button>
             </div>
         </div>
-
+    
         <div class="help-content" id="h-step-1">
-            <div  style="text-align: left; max-height: 35vh; overflow-y: auto; padding-right: 15px;">
-                <h2 style="border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">시스템 가동 절차</h2>
+            <div class="help-scroll-area">
+                <h2 class="help-title">시스템 가동 절차</h2>
                 <section style="margin-top: 20px;">
-                <h3 style="border-left: 4px solid var(--step-active); padding-left: 10px; font-size: 17px;">Step 1 & 2. 데이터 등록 및 기간 설정</h3>
-                <p style="font-size: 14px; margin-bottom: 10px;">
-                    준비한 <strong>용사 명단/열외 일정 CSV</strong>를 업로드하고,<br>
-                    근무를 배정할 <strong>시작일~종료일</strong> 및 <strong>72사단의 마지막 식기일</strong>을 선택합니다.
-                </p>
+                    <h3 class="help-section-h3">Step 1 & 2. 데이터 등록 및 기간 설정</h3>
+                    <p class="text-small" style="margin-bottom: 10px;">
+                        준비한 <strong>용사 명단/열외 일정 CSV</strong>를 업로드하고,<br>
+                        근무를 배정할 <strong>시작일~종료일</strong> 및 <strong>72사단의 마지막 식기일</strong>을 선택합니다.
+                    </p>
                 </section>
         
-                <hr style="margin: 20px 0; border: 0; border-top: 1px dashed #cbd5e1;">
+                <hr class="help-hr">
         
                 <section>
-                <h3 style="border-left: 4px solid #f59e0b; padding-left: 10px; font-size: 17px;">Step 3. 마지막 근무자 입력 (중요)</h3>
-                <p style="font-size: 14px; margin-bottom: 10px;">
-                    연속성 있는 배정을 위해 <strong>배정 직전 날</strong>의 근무자 군번을 입력합니다.
-                </p>
-                
-                <div class="info-box" style="background-color: #f8fafc; border-left: 4px solid #94a3b8; padding: 12px; font-size: 13px;">
-                    <strong>입력 기준</strong>
-                    <ul style="padding-left: 20px; line-height: 1.7; margin-top: 5px;">
-                        <li><strong>식기:</strong> 근무자 3명 중 <strong>순번이 가장 아래</strong>인 인원</li>
-                        <li><strong>불침번:</strong> 마지막 번초인 <strong>불침번 6번</strong> 인원</li>
-                        <li><strong>초병(선/후임):</strong> 마지막 번초인 <strong>초병 2조</strong> 인원</li>
-                        <li><strong>CCTV:</strong> 마지막 번초인 <strong>CCTV 6번 중 순번이 가장 아래</strong>인 인원</li>
-                    </ul>
-                </div>
-                
-                <p style="font-size: 12px; color: #ef4444; margin-top: 8px;">
-                    ※ 예: 2월 1일부터 배정 시, 1월 31일의 마지막 근무자 군번을 입력
-                </p>
+                    <h3 class="help-section-h3">Step 3. 마지막 근무자 입력 (중요)</h3>
+                    <p class="text-small" style="margin-bottom: 10px;">
+                        연속성 있는 배정을 위해 <strong>배정 직전 날</strong>의 근무자 군번을 입력합니다.
+                    </p>
+                    
+                    <div class="standard-box">
+                        <strong>입력 기준</strong>
+                        <ul style="padding-left: 20px; line-height: 1.7; margin-top: 5px;">
+                            <li><strong>식기:</strong> 근무자 3명 중 <strong>순번이 가장 아래</strong>인 인원</li>
+                            <li><strong>불침번:</strong> 마지막 번초인 <strong>불침번 6번</strong> 인원</li>
+                            <li><strong>초병(선/후임):</strong> 마지막 번초인 <strong>초병 2조</strong> 인원</li>
+                            <li><strong>CCTV:</strong> 마지막 번초인 <strong>CCTV 6번 중 순번이 가장 아래</strong>인 인원</li>
+                        </ul>
+                    </div>
+                    
+                    <p class="text-xs text-danger" style="margin-top: 8px;">
+                        ※ 예: 2월 1일부터 배정 시, 1월 31일의 마지막 근무자 군번을 입력
+                    </p>
                 </section>
         
-                <hr style="margin: 20px 0; border: 0; border-top: 1px dashed #cbd5e1;">
+                <hr class="help-hr">
         
                 <section style="margin-bottom: 30px;">
-                <h3 style="border-left: 4px solid #10b981; padding-left: 10px; font-size: 17px;">Step 4. 근무 배정 및 추출</h3>
-                <p style="font-size: 14px;">
-                    시스템은 아래 우선순위로 근무를 자동 분배합니다:
-                </p>
-                <div style="text-align: center; background: #f1f5f9; padding: 10px; border-radius: 6px; font-weight: 800; font-size: 13px; color: #475569;">
-                    열외 제외 ➔ 부조장 ➔ 식기 ➔ 불침번 ➔ 초병 ➔ CCTV
-                </div>
-                <p style="font-size: 13px; margin-top: 10px; color: #64748b;">
-                    배정이 완료되면 결과가 포함된 <strong>CSV 파일이 자동으로 다운로드</strong>됩니다.
-                </p>
+                    <h3 class="help-section-h3">Step 4. 근무 배정 및 추출</h3>
+                    <p class="text-small">시스템은 아래 우선순위로 근무를 자동 분배합니다:</p>
+                    <div class="flow-box">
+                        열외 제외 ➔ 부조장 ➔ 식기 ➔ 불침번 ➔ 초병 ➔ CCTV
+                    </div>
+                    <p class="text-xs text-muted" style="margin-top: 10px;">
+                        배정이 완료되면 결과가 포함된 <strong>CSV 파일이 자동으로 다운로드</strong>됩니다.
+                    </p>
                 </section>
             </div>
             <div class="btn-group">
