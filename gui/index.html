@@ -220,9 +220,68 @@
             </div>
             <div class="btn-group">
                 <button type="button" class="btn-prev" onclick="moveHelp(0)">이전</button>
-                <button type="button" class="btn-next" onclick="exitHelp()">다음</button>
+                <button type="button" class="btn-next" onclick="moveHelp(2)">다음</button>
             </div>
         </div>
+
+        <div class="help-content" id="h-step-2" style="display: none;">
+                <div class="help-scroll-area">
+                    <h2 class="help-title">주요 오류 및 대처법</h2>
+                    
+                    <section style="margin-top: 20px">
+                        <h3 class="help-section-h3">데이터 및 파일 오류</h3>
+                        <p class="text-small">
+                            <strong style="color: #7a5940">한글 깨짐 현상</strong><br>
+                            엑셀 저장 시 반드시 <strong>CSV UTF-8 (쉼표로 분리)</strong> 형식인지 확인하십시오. 일반 CSV는 한글 규격이 맞지 않습니다.
+                        </p>
+                        <p class="text-small" style="margin-top: 10px;">
+                            <strong style="color: #7a5940">"파일을 찾을 수 없습니다"</strong><br>
+                            Step 1에서 파일 선택 후 [다음] 버튼을 눌러야 서버에 동기화됩니다. 창을 그냥 닫지 않았는지 확인하십시오.
+                        </p>
+                    </section>
+            
+                    <hr class="help-hr">
+            
+                    <section>
+                        <h3 class="help-section-h3">입력 및 실행 오류</h3>
+                        <p class="text-small">
+                            <strong style="color: #7a5940">"시작 날짜가 종료 날짜보다 늦습니다"</strong><br>
+                            시작일이 종료일보다 이전 날짜인지 확인하십시오.
+                        </p>
+                        <p class="text-small">
+                            <strong style="color: #7a5940">"명단에 없는 군번입니다"</strong><br>
+                            입력하신 군번이 명단 엑셀 파일과 틀리지 않고 일치해야 합니다. (하이픈 '-' 포함 여부 확인)
+                        </p>
+                        <p class="text-small">
+                            <strong style="color: #7a5940">"배정 가능한 인원이 없습니다"</strong><br>
+                            해당 날짜에 열외 인원을 조정하거나, 업로드한 용사 명단을 다시 한번 확인하십시오.
+                        </p>
+                        <p class="text-small" style="margin-top: 10px;">
+                            <strong style="color: #7a5940">"Permission Denied" (권한 거부)</strong><br>
+                            기존 결과 엑셀 파일을 열어두고 있으면 덮어쓰기가 불가능합니다. 모든 엑셀 창을 닫고 다시 시도하십시오.
+                        </p>
+                    </section>
+            
+                    <hr class="help-hr">
+            
+                    <section style="margin-bottom: 30px;">
+                        <h3 class="help-section-h3">연결 및 환경 문제</h3>
+                        <p class="text-small">
+                            <strong style="color: #7a5940">"Failed to fetch" (연결 실패)</strong><br>
+                            배경에서 실행 중인 <strong>검은색 터미널 창(서버)</strong>이 켜져 있는지 확인하십시오.<br>
+                            꺼져있다면 다시 실행한 뒤 웹페이지를 새로고침 해보시기 바랍니다.
+                        </p>
+                        <p class="text-xs text-muted" style="margin-top: 15px;">
+                            ※ 해결이 되지 않을 경우, 프로그램을 완전히 종료한 후 재실행해 보시기 바랍니다.
+                        </p>
+                    </section>
+                </div>
+                
+                <div class="btn-group">
+                    <button type="button" class="btn-prev" onclick="moveHelp(1)">이전</button>
+                    <button type="button" class="btn-next" onclick="exitHelp()">닫기</button>
+                </div>
+            </div>
     </div>
 </div>
 
