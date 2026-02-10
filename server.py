@@ -62,7 +62,7 @@ class DutyServerHandler(http.server.SimpleHTTPRequestHandler):
 
                 # 3. [핵심] 생성된 CSV 파일을 읽어서 클라이언트에 전송
                 res_date_path = os.path.join(BASE_DIR, "result_by_date.csv")
-                res_person_path = os.path.join(BASE_DIR, "result_by_date.csv")
+                res_person_path = os.path.join(BASE_DIR, "result_by_person.csv")
 
                 csv_data = {}
                 if os.path.exists(res_date_path):
