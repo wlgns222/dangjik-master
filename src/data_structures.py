@@ -1,12 +1,18 @@
 # --- [자료구조 정의] ---
 class Circular_List:
-    def __init__(self):
-        self.__c_list = []
+    def __init__(self, c_list=[]):
+        self.__c_list = c_list
     def append(self, x):
         self.__c_list.append(x)
     def get_at(self, idx):
         if len(self.__c_list) == 0: return None
         return self.__c_list[idx % len(self.__c_list)]
+    def get_slice_list(self, s, e):
+        length = len(self.__c_list)
+        safe_s = max(0, min(s, length))
+        safe_e = max(0, min(e, length))
+        return self.__c_list[safe_s:safe_e]
+
     def length(self):
         return len(self.__c_list)
 
