@@ -3,6 +3,18 @@
  * 역할: UI 입력값 수집, 파일 업로드, 엔진 가동 요청 및 로그 출력
  */
 
+const Duty = Object.freeze({
+    SUB_GUARDIAN: 0, 
+    DISHWASHER: 1,
+    NIGHT_WATCH: 2,
+    SENTINEL: 3,     
+    CCTV_MONITOR: 4       
+});
+
+let clickState = new Bitmask5()
+let eventList = new LinkedList()
+
+
 // 로그 창에 텍스트를 출력하는 유틸리티 함수 (시스템 모니터링용)
 function log(message) {
     const logWindow = document.getElementById('logWindow');
@@ -18,6 +30,20 @@ const readFileAsText = (file) => new Promise((resolve, reject) => {
     reader.onerror = (e) => reject(e);
     reader.readAsText(file);
 });
+
+function registerOrDelte(targetButton, eventType) {
+    if (clickState.isSet(eventType)) {
+        targetButton.style.backgroundColor = ""; // 원래대로
+        eventList.remove(eventType)
+    }    
+    else {
+        targetButton.style.backgroundColor = "yellow"; // 누른 채로 저장되는 느낌
+        eventList.append(eventType)
+    }
+    clickState.toggle(eventType)
+    console.log("현재 순서:", eventList.toArray());
+}
+
 
 async function runPipeline() {
     log("🚀 파이프라인 가동 시작...");
@@ -38,7 +64,8 @@ async function runPipeline() {
                 sr: document.getElementById('lastSr').value,
                 jr: document.getElementById('lastJr').value,
                 cctv: document.getElementById('lastCctv').value
-            }
+            },
+            eventArr: eventList.toArray() 
         };
 
         // 2. 유효성 검사 (입력값 누락 방지 가드 루틴)
