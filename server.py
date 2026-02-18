@@ -61,18 +61,13 @@ class DutyServerHandler(http.server.SimpleHTTPRequestHandler):
                     event_list=params['eventArr']
                 )
 
-                # 3. [핵심] 생성된 CSV 파일을 읽어서 클라이언트에 전송
-                res_date_path = os.path.join(BASE_DIR, "result_by_date.csv")
-                res_person_path = os.path.join(BASE_DIR, "result_by_person.csv")
+                # 3. 생성된 CSV 파일을 읽어서 클라이언트에 전송
+                res_date_path = os.path.join(BASE_DIR, "result_file.csv")
 
                 csv_data = {}
-                if os.path.exists(res_date_path):
-                    with open(res_date_path, "r", encoding="utf-8-sig") as f:
-                        csv_data['byDate'] = f.read()
-                
-                if os.path.exists(res_person_path):
-                    with open(res_person_path, "r", encoding="utf-8-sig") as f:
-                        csv_data['byPerson'] = f.read()
+                if os.path.exists(result_file_path):
+                    with open(result_file_path, "r", encoding="utf-8-sig") as f:
+                        csv_data['result'] = f.read()
 
                 self._send_json_response({
                     "status": "success", 
