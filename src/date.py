@@ -4,7 +4,7 @@ from datetime import datetime, date, timedelta
 
 date_tuple = (
    'MON', 'TUE', 
-   'WEN', 'THU', 
+   'WED', 'THU', 
    'FRI', 'SAT', 'SUN'
 )
 
@@ -42,8 +42,3 @@ def get_day_of_week(day_str): # 특정 date의 요일을 반환
 
 def is_weekend(day_str):
     return get_day_of_week(day_str) == 'SAT' or get_day_of_week(day_str) == 'SUN'
-
-
-
-
-

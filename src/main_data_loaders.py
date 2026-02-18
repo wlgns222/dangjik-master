@@ -26,8 +26,13 @@ date_event_hash = ChainingHashTable(40)
 def load_all_exp_keys(exp_data)->None:
     global all_exp_keys
     exp_set = set()
-    for e in exp_data: exp_set.add(e['사유'])
-    all_exp_keys = tuple(exp_set)    
+    for e in exp_data: 
+        exp_set.add(e['사유'])
+    
+    # '전역', '전대기' 사유 추가
+    exp_set.add("전역")
+    exp_set.add("전대기")
+    all_exp_keys = tuple(exp_set)
 
 def load_date_list(start_date, end_date)->None:
     global date_list
@@ -64,9 +69,3 @@ def load_all_data(date_range, worker_data, exp_data)->None:
     load_worker_list(worker_data)
     load_worker_info_map(worker_data)
     init_date_event_hash()
-
-
-
-
-
-

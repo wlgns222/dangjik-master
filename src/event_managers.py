@@ -70,7 +70,7 @@ class CCTVManager(Manager):
 
             for c_key in md.cctv_keys:
                 for _ in range(3):
-                    event_hash.get(c_key).append(get_next_available(ptr_cctv, assigned_today, DUTY_ENUM.NIGHT))
+                    event_hash.get(c_key).append(get_next_available(ptr_cctv, assigned_today, DUTY_ENUM.CCTV))
 
 class SentinelManager(Manager):
     def __init__(self):
@@ -134,9 +134,7 @@ class MainEngine:
     def export_result_as_file(self, file_name):
         with open(file_name, 'w', newline='', encoding='utf-8-sig') as f:
             writer = csv.writer(f)
-            writer.writerow(["이름"] + md.date_list)
+            writer.writerow(["군번"] + md.date_list)
             matrix = self.__get_hash_to_matrix_type1()
             for row in matrix:
                 writer.writerow(row)
-                
-
