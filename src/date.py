@@ -1,5 +1,12 @@
 import calendar
+from enum import IntEnum
 from datetime import datetime, date, timedelta
+
+date_tuple = (
+   'MON', 'TUE', 
+   'WEN', 'THU', 
+   'FRI', 'SAT', 'SUN'
+)
 
 FORM = "%Y-%m-%d"
 
@@ -28,3 +35,15 @@ def get_custom_date_list(start_str, end_str):
         date_list.append(curr.strftime(FORM))
         curr += timedelta(days=1)
     return date_list
+
+def get_day_of_week(day_str): # 특정 date의 요일을 반환
+    return date_tuple[datetime.strptime(day_str, FORM).weekday()]
+
+
+def is_weekend(day_str):
+    return get_day_of_week(day_str) == 'SAT' or get_day_of_week(day_str) == 'SUN'
+
+
+
+
+

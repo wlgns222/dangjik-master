@@ -57,7 +57,8 @@ class DutyServerHandler(http.server.SimpleHTTPRequestHandler):
                     start_date=params['startDate'],
                     end_date=params['endDate'],
                     ld_date=params['ldDate'],
-                    last_workers=params['lastWorkers']
+                    last_workers=params['lastWorkers'],
+                    event_list=params['eventArr']
                 )
 
                 # 3. [핵심] 생성된 CSV 파일을 읽어서 클라이언트에 전송

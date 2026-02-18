@@ -83,14 +83,14 @@ class SentinelManager(Manager):
         ptr_sr_sentinel = List_Pointer(self.c_list_sr, get_start_index(self.c_list_sr, last_sr_run))
         ptr_jr_sentinel = List_Pointer(self.c_list_jr, get_start_index(self.c_list_jr, last_jr_run))
         for day in md.date_list:
-            event_hash: ChainingHashTable = md.date_event_hash.get(day)
-            assigned_today: set =self.get_assigned_today(day)
-
-            for s_key in md.sentinel_keys:
-                w1 = get_next_available(ptr_sr_sentinel, assigned_today, DUTY_ENUM.SENTINEL)
-                w2 = get_next_available(ptr_jr_sentinel, assigned_today, DUTY_ENUM.SENTINEL)
-                event_hash.get(s_key).append(w1)
-                event_hash.get(s_key).append(w2)
+            if not is_weekend(day):
+                event_hash: ChainingHashTable = md.date_event_hash.get(day)
+                assigned_today: set =self.get_assigned_today(day)
+                for s_key in md.sentinel_keys:
+                    w1 = get_next_available(ptr_sr_sentinel, assigned_today, DUTY_ENUM.SENTINEL)
+                    w2 = get_next_available(ptr_jr_sentinel, assigned_today, DUTY_ENUM.SENTINEL)
+                    event_hash.get(s_key).append(w1)
+                    event_hash.get(s_key).append(w2)
 
 
 

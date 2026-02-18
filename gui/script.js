@@ -31,13 +31,14 @@ const readFileAsText = (file) => new Promise((resolve, reject) => {
     reader.readAsText(file);
 });
 
-function registerOrDelte(targetButton, eventType) {
+function registerOrDelete(targetButton, eventType) {
     if (clickState.isSet(eventType)) {
-        targetButton.style.backgroundColor = ""; // 원래대로
+        targetButton.style.backgroundColor = "";
         eventList.remove(eventType)
     }    
     else {
-        targetButton.style.backgroundColor = "yellow"; // 누른 채로 저장되는 느낌
+        targetButton.style.backgroundColor = "#d1dccb";
+        targetButton.style.color = "#3e4b37";
         eventList.append(eventType)
     }
     clickState.toggle(eventType)
@@ -127,7 +128,7 @@ async function runPipeline() {
             if (result.files.byDate) download(result.files.byDate, `근무표_날짜별.csv`);
             if (result.files.byPerson) download(result.files.byPerson, `근무표_인원별.csv`);
         
-            alert("🎉 생성이 완료되었습니다! '다운로드' 폴더를 확인하세요.");
+            alert("🎉 생성이 완료되었습니다!");
         } else {
             throw new Error(result.message);
         }

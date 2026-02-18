@@ -15,6 +15,7 @@
         <div class="step-dot" id="dot-2">2</div>
         <div class="step-dot" id="dot-3">3</div>
         <div class="step-dot" id="dot-4">4</div>
+        <div class="step-dot" id="dot-5">5</div>
     </div>
 
     <form id="wizardForm">
@@ -90,11 +91,11 @@
             <h2>설정할 근무 지정</h2>
             <p>클릭한 순서대로 근무가 배정됩니다.</p>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                <button type="button" onclick="registerOrDelte(this, Duty.SUB_GUARDIAN)">위병부조장</button>
-                <button type="button" onclick="registerOrDelte(this, Duty.SENTINEL)">초병</button>
-                <button type="button" onclick="registerOrDelte(this, Duty.CCTV_MONITOR)">cctv</button>
-                <button type="button" onclick="registerOrDelte(this, Duty.DISHWASHER)">식기</button>
-                <button type="button" onclick="registerOrDelte(this, Duty.NIGHT_WATCH)">불침번</button>
+                <button type="button" onclick="registerOrDelete(this, Duty.SUB_GUARDIAN)">위병부조장</button>
+                <button type="button" onclick="registerOrDelete(this, Duty.SENTINEL)">초병</button>
+                <button type="button" onclick="registerOrDelete(this, Duty.CCTV_MONITOR)">cctv</button>
+                <button type="button" onclick="registerOrDelete(this, Duty.DISHWASHER)">식기</button>
+                <button type="button" onclick="registerOrDelete(this, Duty.NIGHT_WATCH)">불침번</button>
             </div>
             <div class="btn-group">
                 <button type="button" class="btn-prev" onclick="moveStep(3)">이전</button>
@@ -301,9 +302,8 @@
     </div>
 </div>
 
-<script src="./Bitmask.js"></script>
-<script src="./LinkedList.js"></script>
+<script src="./util.js"></script>
 <script src="./ui-controller.js"></script>
-<script src="./srcipt.js"></script>
+<script src="./script.js"></script>
 </body>
 </html>
