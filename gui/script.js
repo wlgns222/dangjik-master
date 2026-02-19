@@ -38,7 +38,6 @@ function registerOrDelete(targetButton, eventType) {
     }    
     else {
         targetButton.style.backgroundColor = "#d1dccb";
-        targetButton.style.color = "#3e4b37";
         eventList.append(eventType)
     }
     clickState.toggle(eventType)
@@ -124,9 +123,8 @@ async function runPipeline() {
                 document.body.removeChild(a);
             };
         
-            // 서버가 보내준 두 파일을 각각 다운로드
-            if (result.files.byDate) download(result.files.byDate, `근무표_날짜별.csv`);
-            if (result.files.byPerson) download(result.files.byPerson, `근무표_인원별.csv`);
+            // 서버가 보내준 파일 다운로드
+            if (result.files && result.files.result) download(result.files.result, `근무공정표.csv`);
         
             alert("🎉 생성이 완료되었습니다!");
         } else {
