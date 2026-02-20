@@ -38,7 +38,7 @@ def global_filter(date_hash, date_list, exceptions):
             if is_date_in_range(day, from_date, to_date):
                 today_duty.get(exp_type).append(id_tag)
 
-def task_filter(sn, duty_type, worker_info_map, day_str=None):
+def task_filter(sn, duty_type, worker_info_map):
     """
     특정 인원이 해당 보직을 수행할 수 있는지 'Y/N' 데이터로 판별
     반환값: True (배정 불가 / 필터링됨), False (배정 가능)
