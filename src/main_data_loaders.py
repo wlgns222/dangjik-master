@@ -8,7 +8,7 @@ dish_key = "식기"
 sb_guard_key = "위병부조장"
 cctv_keys = tuple(f"CCTV{i}" for i in range(1, 7))
 night_watch_keys = tuple(f"불침번{i}" for i in range(1, 6))
-sentinel_keys = ("초병_1조", "초병_2조")
+sentinel_keys = ("선임초병1", "후임초병1", "선임초병2", "후임초병2")
 
 # 해시테이블의 수월한 접근을 위한 키 모음. 
 all_duty_keys: tuple = (dish_key, sb_guard_key) + (cctv_keys + night_watch_keys + sentinel_keys) 

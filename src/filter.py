@@ -38,7 +38,7 @@ def global_filter(date_hash, date_list, exceptions):
             if is_date_in_range(day, from_date, to_date):
                 today_duty.get(exp_type).append(id_tag)
 
-def task_filter(sn, duty_type, worker_info_map):
+def task_filter(sn, duty_type, worker_info_map, day_str=None):
     """
     특정 인원이 해당 보직을 수행할 수 있는지 'Y/N' 데이터로 판별
     반환값: True (배정 불가 / 필터링됨), False (배정 가능)
@@ -62,3 +62,33 @@ def task_filter(sn, duty_type, worker_info_map):
         return True
         
     return False
+
+#세부 근무 필터
+"""
+def commander_driver_filter(worker, duty_type, day_str, current_key):
+    note = worker.get('비고', '')
+    if "1호차 운전병" not in note:
+        return False
+
+    day_of_week = get_day_of_week(day_str)
+
+    # 금요일: 초병2(퇴근), 불침번 가능
+    if day_of_week == 'FRI':
+        if duty_type == DUTY_ENUM.NIGHT: return False
+        if duty_type == DUTY_ENUM.SENTINEL and "2" in (current_key or ""):
+            return False
+        return True
+
+    # 일요일: 초병1(출근)만 가능
+    elif day_of_week == 'SUN':
+        if duty_type == DUTY_ENUM.SENTINEL and "1" in (current_key or ""):
+            return False
+        return True
+
+    # 토요일: 프리패스
+    elif day_of_week == 'SAT':
+        return False
+
+    # 평일: 불가
+    return True
+    """
