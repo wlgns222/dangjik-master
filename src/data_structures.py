@@ -1,7 +1,10 @@
 # --- [자료구조 정의] ---
 class Circular_List:
-    def __init__(self, c_list=[]):
-        self.__c_list = c_list
+    def __init__(self, c_list = None):
+        if c_list is None :
+            self.__c_list = []
+        else :
+            self.__c_list = c_list
     def append(self, x):
         self.__c_list.append(x)
     def get_at(self, idx):
