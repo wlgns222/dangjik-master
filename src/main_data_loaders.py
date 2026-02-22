@@ -46,18 +46,19 @@ def load_exp_list(exp_data)->None:
         exp_list.append(e)
 
 def load_worker_list(worker_data)->None:
-    global worker_list, worker_info_map
-    worker_list = Circular_List()
+    global worker_list
+    worker_list.clear()
     worker_data.sort(key=lambda x: x['전입일'])
     for w in worker_data: worker_list.append(w['군번'])
 
 def load_worker_info_map(worker_data)->None:
     global worker_info_map
-    worker_info_map = ChainingHashTable(150)
+    worker_info_map.clear()
     for w in worker_data: worker_info_map.set(w['군번'], w)
 
 def init_date_event_hash()->None:
     global date_event_hash, date_list, all_duty_keys, all_exp_keys
+    date_event_hash.clear()
     for day in date_list:
         date_event_hash.set(day, ChainingHashTable(20))
         for h_key in (all_duty_keys + all_exp_keys):

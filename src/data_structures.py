@@ -1,10 +1,12 @@
 # --- [자료구조 정의] ---
 class Circular_List:
-    def __init__(self, c_list = None):
+    def __init__(self, c_list=None):
         if c_list is None :
             self.__c_list = []
         else :
             self.__c_list = c_list
+    def clear(self) :
+        self.__c_list = []
     def append(self, x):
         self.__c_list.append(x)
     def get_at(self, idx):
@@ -31,6 +33,8 @@ class List_Pointer:
 class ChainingHashTable:
     def __init__(self, size=10):
         self.size = size
+        self.table = [[] for _ in range(self.size)]
+    def clear(self) :
         self.table = [[] for _ in range(self.size)]
     def _hash_function(self, key):
         return hash(key) % self.size
