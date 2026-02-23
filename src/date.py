@@ -39,6 +39,5 @@ def get_custom_date_list(start_str, end_str):
 def get_day_of_week(day_str): # 특정 date의 요일을 반환
     return date_tuple[datetime.strptime(day_str, FORM).weekday()]
 
-
 def is_weekend(day_str):
     return get_day_of_week(day_str) == 'SAT' or get_day_of_week(day_str) == 'SUN'
