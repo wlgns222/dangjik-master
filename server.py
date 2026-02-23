@@ -2,7 +2,7 @@ import http.server
 import socketserver
 import json
 import os
-from src.duty_main import duty_generator
+from src.main_controller import *
 
 # [설계 원칙] 상수(Constant) 선언을 통한 하드코딩 방지
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))

@@ -28,7 +28,9 @@ def duty_generator(start_date, end_date, ld_date, last_workers, event_list):
 
     worker_path = os.path.join(root_path, "data", "worker_list.csv")
     exception_path = os.path.join(root_path, "data", "exception_list.csv")
-    output_path = os.path.join(root_path, "data", "근무공정표.csv")
+    #output_path = os.path.join(root_path, "data", "근무공정표.csv")
+    downloads = os.path.join(os.path.expanduser('~'), 'Downloads')
+    download_path = os.path.join(downloads, "근무공정표.csv")
 
     # 1. 데이터 읽어오기
     try:
@@ -43,7 +45,7 @@ def duty_generator(start_date, end_date, ld_date, last_workers, event_list):
     # 3. 달력에 전역자, 열외자 도장 먼저 찍기 (가장 중요!)
     engine.exp_manager.runManage()
 
-    # 4. 프론트엔드(UI)에서 전달받은 우선순위(event_list)에 따라 배정 실행
+    # 4. 우선순위에 따라 배정 실행
     for event in event_list:
         if event == DUTY_ENUM.SUB_GUARD:
             engine.sg_manager.runManage(last_workers.get('sub'))
@@ -56,8 +58,9 @@ def duty_generator(start_date, end_date, ld_date, last_workers, event_list):
         elif event == DUTY_ENUM.CCTV:
             engine.cctv_manager.runManage(last_workers.get('cctv'))
             
-    # 5. 모든 배정이 끝난 달력을 CSV 엑셀 파일로 출력
-    engine.export_result_as_file(output_path)
-    
+    # 5. CSV 파일 출력
+    #engine.export_result_as_file(output_path)
+    engine.export_result_as_file(download_path)
+
     # 생성된 파일의 절대 경로를 반환 (server.py에서 다운로드할 수 있도록)
-    return output_path
+    return download_path

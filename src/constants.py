@@ -20,7 +20,8 @@ WORKER_KEYS = {
 
 # --- [시스템 설정] ---
 DATE_FORMAT = "%Y-%m-%d"
-MAX_WORKER_COUNT = 150  # 해시테이블 초기 사이즈 등
+MAX_WORKER_COUNT = 150
+EVENT_HASH_SIZE = 40
 
 # --- [근무 상세 키워드] ---
 # 해시테이블 및 결과 파일 출력 시 사용되는 실제 근무 명칭

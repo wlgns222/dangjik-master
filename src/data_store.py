@@ -2,7 +2,14 @@ import csv
 from datetime import datetime, timedelta
 from .data_structures import *
 from .date import *
-from .constants import DATE_FORMAT, MAX_WORKER_COUNT, WORKER_KEYS, ALL_DUTY_KEYS
+from .constants import DATE_FORMAT, MAX_WORKER_COUNT, WORKER_KEYS, ALL_DUTY_KEYS, EVENT_HASH_SIZE
+
+date_list: list = None
+exp_list: list = None 
+worker_list: Circular_List = Circular_List()
+
+worker_info_map = ChainingHashTable(MAX_WORKER_COUNT)
+date_event_hash = ChainingHashTable(EVENT_HASH_SIZE)
 
 def validate_date(date_str, field_name, row_id):
     if not date_str or not str(date_str).strip():

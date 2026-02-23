@@ -22,14 +22,12 @@ class Manager:
     def delManage(self):
         pass
 
-
 # ==========================================
 # 2. 열외 관리 매니저
 # ==========================================
 class ExpManager(Manager):
     def runManage(self):
         global_filter()
-
 
 # ==========================================
 # 3. 개별 근무 배정 매니저들
@@ -49,7 +47,6 @@ class SubGuardManager(Manager):
             next_worker = get_next_available(ptr_sub_guard, assigned_today, DUTY_ENUM.SUB_GUARD)
             event_hash.get(SB_GUARD_KEY).append(next_worker)
 
-
 class DishManager(Manager):
     def __init__(self):
         self.c_list = ds.worker_list 
@@ -63,7 +60,6 @@ class DishManager(Manager):
             
             next_worker = get_next_available(ptr_dish, assigned_today, DUTY_ENUM.DISH)
             event_hash.get(DISH_KEY).append(next_worker)
-
 
 class NightManager(Manager):
     def __init__(self):
@@ -79,7 +75,6 @@ class NightManager(Manager):
                 next_worker = get_next_available(ptr_night, assigned_today, DUTY_ENUM.NIGHT)
                 event_hash.get(key).append(next_worker)
 
-
 class CCTVManager(Manager):
     def __init__(self):
         self.c_list = ds.worker_list 
@@ -93,7 +88,6 @@ class CCTVManager(Manager):
                 assigned_today = self.get_assigned_today(day)
                 next_worker = get_next_available(ptr_cctv, assigned_today, DUTY_ENUM.CCTV)
                 event_hash.get(key).append(next_worker)
-
 
 class SentinelManager(Manager):
     def __init__(self):
@@ -113,7 +107,6 @@ class SentinelManager(Manager):
                 else:
                     next_worker = get_next_available(ptr_st_jr, assigned_today, DUTY_ENUM.SENTINEL)
                 event_hash.get(key).append(next_worker)
-
 
 # ==========================================
 # 4. 전체 총괄 엔진 (메인 컨트롤러 연결부)
@@ -149,11 +142,13 @@ class MainEngine:
         # CSV 내보내기를 위한 2차원 배열 변환
         num_dates = len(ds.date_list)
         num_workers = ds.worker_list.length()
-        matrix = [[' '] * (num_dates + 1) for _ in range(num_workers)]
+        matrix = [[' '] * (num_dates + 2) for _ in range(num_workers)]
         
         for i in range(num_workers):
             worker_id = ds.worker_list.get_at(i)
-            matrix[i][0] = ds.worker_info_map.get(worker_id)['군번']
+            worker_info = ds.worker_info_map.get(worker_id)
+            matrix[i][0] = worker_info['군번']
+            matrix[i][1] = worker_info.get('이름', '알수없음')
             for j in range(num_dates):
                 day = ds.date_list[j]
                 day_hash = ds.date_event_hash.get(day)
@@ -161,13 +156,13 @@ class MainEngine:
                 for event in (ALL_DUTY_KEYS + ds.all_exp_keys):
                     run_worker_list = day_hash.get(event)
                     if run_worker_list and worker_id in run_worker_list:
-                        matrix[i][j+1] = event
+                        matrix[i][j+2] = event
         return matrix
 
     def export_result_as_file(self, file_name):
         with open(file_name, 'w', newline='', encoding='utf-8-sig') as f:
             writer = csv.writer(f)
-            header = ['군번'] + ds.date_list
+            header = ['군번', '이름'] + ds.date_list
             writer.writerow(header)
             
             for row in self.__get_hash_to_matrix_type1():
