@@ -28,9 +28,9 @@ def duty_generator(start_date, end_date, ld_date, last_workers, event_list):
 
     worker_path = os.path.join(root_path, "data", "worker_list.csv")
     exception_path = os.path.join(root_path, "data", "exception_list.csv")
-    #output_path = os.path.join(root_path, "data", "근무공정표.csv")
-    downloads = os.path.join(os.path.expanduser('~'), 'Downloads')
-    download_path = os.path.join(downloads, "근무공정표.csv")
+    output_path = os.path.join(root_path, "data", "근무공정표.csv")
+    #downloads = os.path.join(os.path.expanduser('~'), 'Downloads')
+    #download_path = os.path.join(downloads, "근무공정표.csv")
 
     # 1. 데이터 읽어오기
     try:
@@ -59,8 +59,8 @@ def duty_generator(start_date, end_date, ld_date, last_workers, event_list):
             engine.cctv_manager.runManage(last_workers.get('cctv'))
             
     # 5. CSV 파일 출력
-    #engine.export_result_as_file(output_path)
-    engine.export_result_as_file(download_path)
+    engine.export_result_as_file(output_path)
+    #engine.export_result_as_file(download_path)
 
     # 생성된 파일의 절대 경로를 반환 (server.py에서 다운로드할 수 있도록)
-    return download_path
+    return output_path

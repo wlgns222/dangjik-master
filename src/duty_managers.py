@@ -1,5 +1,6 @@
 import src.data_store as ds 
-from .data_structures import List_Pointer
+from .data_structures import *
+from .date import is_weekend, get_date_diff
 from .duty_engine import global_filter, get_start_index, get_next_available
 from .constants import (DUTY_ENUM, ALL_DUTY_KEYS, SB_GUARD_KEY, DISH_KEY, 
                         NIGHT_WATCH_KEYS, CCTV_KEYS, SENTINEL_KEYS)
@@ -43,7 +44,6 @@ class SubGuardManager(Manager):
             event_hash = ds.date_event_hash.get(day)
             assigned_today = self.get_assigned_today(day)
             
-            # 엔진에게 오늘 바쁜 사람 명단(assigned_today)을 넘기고 다음 사람을 받음
             next_worker = get_next_available(ptr_sub_guard, assigned_today, DUTY_ENUM.SUB_GUARD)
             event_hash.get(SB_GUARD_KEY).append(next_worker)
 
@@ -57,9 +57,13 @@ class DishManager(Manager):
         for day in ds.date_list:
             event_hash = ds.date_event_hash.get(day)
             assigned_today = self.get_assigned_today(day)
-            
-            next_worker = get_next_available(ptr_dish, assigned_today, DUTY_ENUM.DISH)
-            event_hash.get(DISH_KEY).append(next_worker)
+
+            if get_date_diff(day, ld_date) % 5 == 0 :
+                event_hash.get(DISH_KEY).append('72사단')
+            else :
+                for _ in range(3) :
+                    next_worker = get_next_available(ptr_dish, assigned_today, DUTY_ENUM.DISH)
+                    event_hash.get(DISH_KEY).append(next_worker)
 
 class NightManager(Manager):
     def __init__(self):
@@ -86,27 +90,35 @@ class CCTVManager(Manager):
             event_hash = ds.date_event_hash.get(day)
             for key in CCTV_KEYS:
                 assigned_today = self.get_assigned_today(day)
-                next_worker = get_next_available(ptr_cctv, assigned_today, DUTY_ENUM.CCTV)
-                event_hash.get(key).append(next_worker)
+                
+                for _ in range(3) :
+                    next_worker = get_next_available(ptr_cctv, assigned_today, DUTY_ENUM.CCTV)
+                    event_hash.get(key).append(next_worker)
 
 class SentinelManager(Manager):
     def __init__(self):
-        self.c_list = ds.worker_list
+        length = ds.worker_list.length()
+        mid = length // 2
+        
+        self.c_list_sr = Circular_List(ds.worker_list.get_slice_list(0, mid))
+        self.c_list_jr = Circular_List(ds.worker_list.get_slice_list(mid, length))
 
     def runManage(self, last_run_sr, last_run_jr) -> None:
-        ptr_st_sr = List_Pointer(self.c_list, get_start_index(self.c_list, last_run_sr))
-        ptr_st_jr = List_Pointer(self.c_list, get_start_index(self.c_list, last_run_jr))
+        ptr_st_sr = List_Pointer(self.c_list_sr, get_start_index(self.c_list_sr, last_run_sr))
+        ptr_st_jr = List_Pointer(self.c_list_jr, get_start_index(self.c_list_jr, last_run_jr))
 
         for day in ds.date_list:
-            event_hash = ds.date_event_hash.get(day)
-            for key in SENTINEL_KEYS:
+            if not is_weekend(day):
+                event_hash = ds.date_event_hash.get(day)
                 assigned_today = self.get_assigned_today(day)
                 
-                if "선임" in key:
-                    next_worker = get_next_available(ptr_st_sr, assigned_today, DUTY_ENUM.SENTINEL)
-                else:
-                    next_worker = get_next_available(ptr_st_jr, assigned_today, DUTY_ENUM.SENTINEL)
-                event_hash.get(key).append(next_worker)
+                for key in SENTINEL_KEYS:
+                    if "선임" in key:
+                        next_worker = get_next_available(ptr_st_sr, assigned_today, DUTY_ENUM.SENTINEL)
+                        event_hash.get(key).append(next_worker)
+                    elif "후임" in key:
+                        next_worker = get_next_available(ptr_st_jr, assigned_today, DUTY_ENUM.SENTINEL)
+                        event_hash.get(key).append(next_worker)
 
 # ==========================================
 # 4. 전체 총괄 엔진 (메인 컨트롤러 연결부)
