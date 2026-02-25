@@ -52,6 +52,7 @@ async function runPipeline() {
         // 1. DOM 데이터 캡처 (데이터 패킷 조립)
         const workerFile = document.getElementById('workerFile').files[0];
         const exceptionFile = document.getElementById('exceptionFile').files[0];
+        const holidayFile = document.getElementById('holidayFile').files[0];
         
         const payload = {
             startDate: document.getElementById('startDate').value,
@@ -82,7 +83,7 @@ async function runPipeline() {
             await fetch('/upload', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ fileName: 'worker_list.csv', content: content })
+                body: JSON.stringify({ fileName: '용사명단.csv', content: content })
             });
             log("✅ 병사 명단 동기화 완료.");
         }
@@ -93,9 +94,20 @@ async function runPipeline() {
             await fetch('/upload', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ fileName: 'exception_list.csv', content: content })
+                body: JSON.stringify({ fileName: '열외일정.csv', content: content })
             });
             log("✅ 열외 일정 동기화 완료.");
+        }
+
+        if (holidayFile) {
+            log(`파일 전송 중: ${holidayFile.name}...`);
+            const content = await readFileAsText(holidayFile);
+            await fetch('/upload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fileName: '공휴일.csv', content: content })
+            });
+            log("✅ 공휴일 일정 동기화 완료.");
         }
 
         // 4. 엔진 가동 요청 (Core Engine Execution)

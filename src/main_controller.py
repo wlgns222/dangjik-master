@@ -1,9 +1,10 @@
 import os
 import csv
+import src.data_store as ds 
 from .duty_managers import MainEngine
 from .constants import DUTY_ENUM
 
-def load_data(worker_file, exception_file):
+def load_data(worker_file, exception_file, holiday_file):
     worker_data = []
     # 1. 인명부 로드
     with open(worker_file, 'r', encoding='utf-8-sig') as f:
@@ -17,8 +18,15 @@ def load_data(worker_file, exception_file):
         reader = csv.DictReader(f)
         for row in reader:
             exceptions.append(row)
+
+    # 3. 공휴일 명단 로드
+    holiday_data = []
+    with open(holiday_file, 'r', encoding='utf-8-sig') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            holiday_data.append(row)
             
-    return worker_data, exceptions
+    return worker_data, exceptions, holiday_data
 
 
 def duty_generator(start_date, end_date, ld_date, last_workers, event_list):
@@ -26,17 +34,20 @@ def duty_generator(start_date, end_date, ld_date, last_workers, event_list):
     current_dir = os.path.dirname(os.path.abspath(__file__))
     root_path = os.path.dirname(current_dir)
 
-    worker_path = os.path.join(root_path, "data", "worker_list.csv")
-    exception_path = os.path.join(root_path, "data", "exception_list.csv")
+    worker_path = os.path.join(root_path, "data", "용사명단.csv")
+    exception_path = os.path.join(root_path, "data", "열외일정.csv")
+    holiday_path = os.path.join(root_path, "data", "공휴일.csv")
     output_path = os.path.join(root_path, "data", "근무공정표.csv")
     #downloads = os.path.join(os.path.expanduser('~'), 'Downloads')
     #download_path = os.path.join(downloads, "근무공정표.csv")
 
     # 1. 데이터 읽어오기
     try:
-        worker_data, exceptions = load_data(worker_path, exception_path)
+        worker_data, exceptions, holiday_data = load_data(worker_path, exception_path, holiday_path)
     except FileNotFoundError:
         raise ValueError("업로드된 명단 파일을 찾을 수 없습니다.")
+
+    ds.load_holiday(holiday_data)
 
     # 2. 메인 엔진 가동 (데이터 스토어 적재 및 매니저 초기화 일괄 수행)
     date_range = (start_date, end_date)

@@ -8,6 +8,8 @@ date_list: list = None
 exp_list: list = None 
 worker_list: Circular_List = Circular_List()
 
+holiday_set: set = None
+
 worker_info_map = ChainingHashTable(MAX_WORKER_COUNT)
 date_event_hash = ChainingHashTable(EVENT_HASH_SIZE)
 
@@ -66,6 +68,12 @@ def load_worker_list(worker_data)->None:
     worker_data.sort(key=lambda x: datetime.strptime(str(x['전입일']).strip(), DATE_FORMAT))
     for w in worker_data: 
         worker_list.append(w['군번'])
+
+def load_holiday(holiday_data) -> None :
+    global holiday_set
+    holiday_set.clear()
+    for h in holiday_data:
+        holiday_set.add(h['날짜'].strip())
 
 def load_worker_info_map(worker_data)->None:
     global worker_info_map
