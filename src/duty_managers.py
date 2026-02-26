@@ -108,7 +108,7 @@ class SentinelManager(Manager):
         ptr_st_jr = List_Pointer(self.c_list_jr, get_start_index(self.c_list_jr, last_run_jr))
 
         for day in ds.date_list:
-            if not is_weekend(day):
+            if not is_weekend(day) and (day not in ds.holiday_set):
                 event_hash = ds.date_event_hash.get(day)
                 assigned_today = self.get_assigned_today(day)
                 
