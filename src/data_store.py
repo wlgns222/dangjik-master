@@ -8,7 +8,7 @@ date_list: list = None
 exp_list: list = None 
 worker_list: Circular_List = Circular_List()
 
-holiday_set: set = None
+holiday_set: set = set()
 
 worker_info_map = ChainingHashTable(MAX_WORKER_COUNT)
 date_event_hash = ChainingHashTable(EVENT_HASH_SIZE)
