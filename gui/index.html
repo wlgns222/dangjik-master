@@ -6,29 +6,30 @@
     <title>Dangjik Master - Admin</title>
     <style>
         :root {
-            --sidebar-bg: #F9FAFB;      /* 사이드바 배경 */
-            --main-bg: #FFFFFF;         /* 메인 배경 */
-            --text-main: #111827;       /* 메인 텍스트 */
-            --text-sub: #6B7280;        /* 서브 텍스트 */
-            --border: #E5E7EB;          /* 구분선 */
-            --accent: #0F172A;          /* 포인트 컬러 */
-            --input-bg: #F3F4F6;        /* 인풋 배경 */
+            --sidebar-bg: #F9FAFB;
+            --main-bg: #FFFFFF;
+            --text-main: #111827;
+            --text-sub: #6B7280;
+            --border: #E5E7EB;
+            --accent: #0F172A;
+            --input-bg: #F3F4F6;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body {
-            font-family: "Malgun Gothic", "맑은 고딕", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            /* 외부 폰트 없이 윈도우 기본 폰트를 최대한 세련되게 세팅 */
+            font-family: "Malgun Gothic", "맑은 고딕", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             background-color: var(--main-bg);
             color: var(--text-main);
             display: flex;
             height: 100vh;
             overflow: hidden;
-            letter-spacing: -0.03em; 
+            letter-spacing: -0.03em;
             word-spacing: -0.05em;
         }
 
-        /* 사이드바 (너비만 280px로 확장) */
+        /* --- 사이드바 --- */
         .sidebar {
             width: 280px;
             background-color: var(--sidebar-bg);
@@ -52,8 +53,8 @@
             margin: 4px 12px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 15px;
+            font-weight: 600;
             color: var(--text-sub);
             transition: all 0.2s;
         }
@@ -61,40 +62,34 @@
         .nav-item.active {
             background-color: #E2E8F0;
             color: var(--accent);
-            font-weight: 600;
         }
 
-        /* 메인 콘텐츠 영역 (이전 핏으로 원상복구) */
+        /* --- 메인 콘텐츠 공통 --- */
         .main-content {
             flex: 1;
             overflow-y: auto;
             padding: 56px;
         }
-
+        
         .content-wrapper {
             max-width: 720px;
             margin: 0 auto;
         }
 
-        .page-header {
-            margin-bottom: 56px;
-        }
+        /* 탭 전환을 위한 클래스 */
+        .page-section { display: none; }
+        .page-section.active { display: block; }
+
+        .page-header { margin-bottom: 56px; }
         .page-header h1 {
             font-size: 32px;
             font-weight: 700;
             margin-bottom: 12px;
-            letter-spacing: -0.03em;
         }
-        .page-header p { 
-            color: var(--text-sub); 
-            font-size: 16px; 
-        }
+        .page-header p { color: var(--text-sub); font-size: 16px; }
 
-        /* 섹션 구분 */
-        .form-section {
-            margin-bottom: 56px;
-        }
-
+        /* --- 새 근무표 작성 폼 스타일 (기존과 동일) --- */
+        .form-section { margin-bottom: 56px; }
         .section-title {
             font-size: 18px;
             font-weight: 600;
@@ -105,104 +100,81 @@
             border-bottom: 1px solid var(--border);
             padding-bottom: 16px;
         }
+        .section-number { color: var(--text-sub); font-size: 15px; font-weight: 500; }
         
-        .section-number {
-            color: var(--text-sub);
-            font-size: 15px;
-            font-weight: 500;
-        }
+        .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .full-width { grid-column: 1 / -1; }
+        .form-group { display: flex; flex-direction: column; gap: 10px; }
+        label { font-size: 14px; font-weight: 600; color: #374151; }
 
-        /* 폼 요소 레이아웃 */
-        .input-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-        }
-        .full-width {
-            grid-column: 1 / -1;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #374151;
-        }
-
-        input[type="text"], 
-        input[type="date"], 
-        input[type="file"] {
-            width: 100%;
-            padding: 14px 16px;
-            background-color: var(--input-bg);
-            border: 1px solid transparent;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 14px;
-            color: var(--text-main);
+        input[type="text"], input[type="date"], input[type="file"] {
+            width: 100%; padding: 14px 16px; background-color: var(--input-bg);
+            border: 1px solid transparent; border-radius: 8px;
+            font-family: inherit; font-size: 14px; color: var(--text-main);
             transition: all 0.2s ease;
         }
-        
         input[type="file"] { padding: 11px 16px; }
-
         input:hover { background-color: #E5E7EB; }
-        input:focus {
-            outline: none;
-            background-color: var(--main-bg);
-            border-color: #94A3B8;
-            box-shadow: 0 0 0 4px rgba(148, 163, 184, 0.15);
-        }
+        input:focus { outline: none; background-color: var(--main-bg); border-color: #94A3B8; box-shadow: 0 0 0 4px rgba(148, 163, 184, 0.15); }
 
-        /* 읽기 전용 뱃지 스타일 */
-        .badge-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 8px;
-        }
+        .badge-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
         .badge {
-            padding: 8px 16px;
-            background-color: var(--input-bg);
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-main);
+            padding: 8px 16px; background-color: var(--input-bg);
+            border-radius: 6px; font-size: 14px; font-weight: 600; color: var(--text-main);
         }
 
-        /* 하단 고정 액션 바 */
         .form-actions {
-            margin-top: 40px;
-            padding-top: 32px;
-            border-top: 1px solid var(--border);
+            margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; padding-bottom: 60px;
+        }
+        .btn-submit {
+            background-color: var(--accent); color: #FFFFFF; border: none;
+            padding: 16px 36px; border-radius: 8px; font-size: 15px; font-weight: 600;
+            cursor: pointer; transition: background-color 0.2s;
+        }
+        .btn-submit:hover { background-color: #1E293B; }
+
+        /* --- 설정 창 특화 스타일 --- */
+        .settings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .settings-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding-bottom: 60px;
-        }
-
-        .status-text {
-            font-size: 14px;
-            color: var(--text-sub);
-        }
-
-        .btn-submit {
-            background-color: var(--accent);
-            color: #FFFFFF;
-            border: none;
-            padding: 16px 36px;
+            background-color: var(--main-bg);
+            border: 1px solid var(--border);
+            padding: 16px 20px;
             border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
         }
-        .btn-submit:hover {
-            background-color: #1E293B;
+        .duty-name { font-size: 15px; font-weight: 600; }
+        
+        .item-controls { display: flex; gap: 8px; }
+        .btn-control {
+            background-color: var(--input-bg); border: none; padding: 8px 12px;
+            border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-main);
+        }
+        .btn-control:hover { background-color: #E5E7EB; }
+        .btn-delete { color: #DC2626; background-color: #FEE2E2; }
+        .btn-delete:hover { background-color: #FECACA; }
+
+        .add-duty-box {
+            display: flex; gap: 12px;
+            padding: 24px; background-color: var(--input-bg); border-radius: 8px;
+        }
+        .btn-add {
+            background-color: var(--main-bg); border: 1px solid var(--border);
+            padding: 0 24px; border-radius: 8px; font-weight: 600; cursor: pointer; white-space: nowrap;
+        }
+        .btn-add:hover { background-color: #E5E7EB; }
+
+        /* --- 도움말 창 특화 스타일 --- */
+        .help-placeholder {
+            padding: 60px 0; text-align: center; color: var(--text-sub);
+            background-color: var(--input-bg); border-radius: 12px; border: 1px dashed #CBD5E1;
         }
     </style>
 </head>
@@ -211,111 +183,208 @@
     <aside class="sidebar">
         <div class="sidebar-brand">Dangjik Master</div>
         <ul class="nav-menu">
-            <li class="nav-item active">새 근무표 작성</li>
-            <li class="nav-item">근무 규칙 설정</li>
-            <li class="nav-item">도움말</li>
+            <li class="nav-item active" onclick="switchTab('page-create', this)">새 근무표 작성</li>
+            <li class="nav-item" onclick="switchTab('page-settings', this)">근무 규칙 설정</li>
+            <li class="nav-item" onclick="switchTab('page-help', this)">도움말</li>
         </ul>
     </aside>
 
     <main class="main-content">
         <div class="content-wrapper">
-            <div class="page-header">
-                <h1>새 근무표 작성</h1>
-                <p>이번 주차 근무표 생성을 위한 기초 데이터를 입력해 주세요.</p>
+
+            <div id="page-create" class="page-section active">
+                <div class="page-header">
+                    <h1>새 근무표 작성</h1>
+                    <p>이번 주차 근무표 생성을 위한 기초 데이터를 입력해 주세요.</p>
+                </div>
+                <form id="wizardForm">
+                    <div class="form-section">
+                        <h2 class="section-title"><span class="section-number">01</span> 데이터 파일 업로드</h2>
+                        <div class="input-grid">
+                            <div class="form-group full-width">
+                                <label>용사 명단 (CSV)</label>
+                                <input type="file" id="workerFile" accept=".csv">
+                            </div>
+                            <div class="form-group">
+                                <label>열외 일정 (CSV)</label>
+                                <input type="file" id="exceptionFile" accept=".csv">
+                            </div>
+                            <div class="form-group">
+                                <label>공휴일 일정 (CSV)</label>
+                                <input type="file" id="holidayFile" accept=".csv">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2 class="section-title"><span class="section-number">02</span> 배정 기간 및 특수 일정</h2>
+                        <div class="input-grid">
+                            <div class="form-group">
+                                <label>근무 시작일</label>
+                                <input type="date" id="startDate">
+                            </div>
+                            <div class="form-group">
+                                <label>근무 종료일</label>
+                                <input type="date" id="endDate">
+                            </div>
+                            <div class="form-group">
+                                <label>72사단 마지막 식기 당번일</label>
+                                <input type="date" id="ldDate">
+                            </div>
+                            <div class="form-group">
+                                <label>PX병 마지막 불침번 (3일 주기)</label>
+                                <input type="date" id="pxDate">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2 class="section-title"><span class="section-number">03</span> 직전 근무자 군번 입력</h2>
+                        <div class="input-grid">
+                            <div class="form-group">
+                                <label>위병부조장</label>
+                                <input type="text" id="lastSub" placeholder="예: 25-760000">
+                            </div>
+                            <div class="form-group">
+                                <label>식기 (마지막 순번)</label>
+                                <input type="text" id="lastDish" placeholder="예: 25-760000">
+                            </div>
+                            <div class="form-group">
+                                <label>선임초병 (2조)</label>
+                                <input type="text" id="lastSr" placeholder="군번 입력">
+                            </div>
+                            <div class="form-group">
+                                <label>후임초병 (2조)</label>
+                                <input type="text" id="lastJr" placeholder="군번 입력">
+                            </div>
+                            <div class="form-group">
+                                <label>불침번 (6번초)</label>
+                                <input type="text" id="lastNight" placeholder="군번 입력">
+                            </div>
+                            <div class="form-group">
+                                <label>CCTV (6번초 마지막)</label>
+                                <input type="text" id="lastCctv" placeholder="군번 입력">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2 class="section-title"><span class="section-number">04</span> 적용될 배정 순서</h2>
+                        <p style="font-size: 14px; color: var(--text-sub); margin-bottom: 16px;">현재 시스템에 설정된 순서대로 배정됩니다. (설정 탭에서 변경 가능)</p>
+                        <div class="badge-list" id="displayOrderList">
+                            <span class="badge">1. 위병부조장</span>
+                            <span class="badge">2. 식기</span>
+                            <span class="badge">3. 불침번</span>
+                            <span class="badge">4. 초병</span>
+                            <span class="badge">5. CCTV</span>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <span class="status-text" style="color: var(--text-sub);">입력하신 데이터를 바탕으로 자동 배정을 시작합니다.</span>
+                        <button type="button" id="runButton" class="btn-submit">근무표 생성하기</button>
+                    </div>
+                </form>
             </div>
 
-            <form id="wizardForm">
+            <div id="page-settings" class="page-section">
+                <div class="page-header">
+                    <h1>근무 규칙 설정</h1>
+                    <p>어떤 근무를 먼저 배정할지 우선순위를 설정하고 관리합니다.</p>
+                </div>
                 
-                <div class="form-section">
-                    <h2 class="section-title"><span class="section-number">01</span> 데이터 파일 업로드</h2>
-                    <div class="input-grid">
-                        <div class="form-group full-width">
-                            <label>용사 명단 (CSV)</label>
-                            <input type="file" id="workerFile" accept=".csv">
+                <div class="form-section" style="border: none;">
+                    <h2 class="section-title">근무 배정 순서 편집</h2>
+                    
+                    <div class="settings-list" id="dutyEditList">
+                        <div class="settings-item">
+                            <span class="duty-name">1. 위병부조장</span>
+                            <div class="item-controls">
+                                <button class="btn-control">▲ 위로</button>
+                                <button class="btn-control">▼ 아래로</button>
+                                <button class="btn-control btn-delete">삭제</button>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>열외 일정 (CSV)</label>
-                            <input type="file" id="exceptionFile" accept=".csv">
+                        <div class="settings-item">
+                            <span class="duty-name">2. 식기</span>
+                            <div class="item-controls">
+                                <button class="btn-control">▲ 위로</button>
+                                <button class="btn-control">▼ 아래로</button>
+                                <button class="btn-control btn-delete">삭제</button>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>공휴일 일정 (CSV)</label>
-                            <input type="file" id="holidayFile" accept=".csv">
+                        <div class="settings-item">
+                            <span class="duty-name">3. 불침번</span>
+                            <div class="item-controls">
+                                <button class="btn-control">▲ 위로</button>
+                                <button class="btn-control">▼ 아래로</button>
+                                <button class="btn-control btn-delete">삭제</button>
+                            </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="form-section">
-                    <h2 class="section-title"><span class="section-number">02</span> 배정 기간 및 특수 일정</h2>
-                    <div class="input-grid">
-                        <div class="form-group">
-                            <label>근무 시작일</label>
-                            <input type="date" id="startDate">
+                        <div class="settings-item">
+                            <span class="duty-name">4. 초병 (선임/후임)</span>
+                            <div class="item-controls">
+                                <button class="btn-control">▲ 위로</button>
+                                <button class="btn-control">▼ 아래로</button>
+                                <button class="btn-control btn-delete">삭제</button>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>근무 종료일</label>
-                            <input type="date" id="endDate">
-                        </div>
-                        <div class="form-group">
-                            <label>72사단 마지막 식기 당번일</label>
-                            <input type="date" id="ldDate">
-                        </div>
-                        <div class="form-group">
-                            <label>PX병 마지막 불침번 (3일 주기)</label>
-                            <input type="date" id="pxDate">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-section">
-                    <h2 class="section-title"><span class="section-number">03</span> 직전 근무자 군번 입력</h2>
-                    <div class="input-grid">
-                        <div class="form-group">
-                            <label>위병부조장</label>
-                            <input type="text" id="lastSub" placeholder="예: 25-760000">
-                        </div>
-                        <div class="form-group">
-                            <label>식기 (마지막 순번)</label>
-                            <input type="text" id="lastDish" placeholder="예: 25-760000">
-                        </div>
-                        <div class="form-group">
-                            <label>선임초병 (2조)</label>
-                            <input type="text" id="lastSr" placeholder="군번 입력">
-                        </div>
-                        <div class="form-group">
-                            <label>후임초병 (2조)</label>
-                            <input type="text" id="lastJr" placeholder="군번 입력">
-                        </div>
-                        <div class="form-group">
-                            <label>불침번 (6번초)</label>
-                            <input type="text" id="lastNight" placeholder="군번 입력">
-                        </div>
-                        <div class="form-group">
-                            <label>CCTV (6번초 마지막)</label>
-                            <input type="text" id="lastCctv" placeholder="군번 입력">
+                        <div class="settings-item">
+                            <span class="duty-name">5. CCTV</span>
+                            <div class="item-controls">
+                                <button class="btn-control">▲ 위로</button>
+                                <button class="btn-control">▼ 아래로</button>
+                                <button class="btn-control btn-delete">삭제</button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="form-section">
-                    <h2 class="section-title"><span class="section-number">04</span> 적용될 배정 순서</h2>
-                    <p style="font-size: 14px; color: var(--text-sub); margin-bottom: 16px;">현재 시스템에 설정된 순서대로 배정됩니다. (설정 탭에서 변경 가능)</p>
-                    <div class="badge-list">
-                        <span class="badge">1. 위병부조장</span>
-                        <span class="badge">2. 식기</span>
-                        <span class="badge">3. 불침번</span>
-                        <span class="badge">4. 초병</span>
-                        <span class="badge">5. CCTV</span>
+                    <div class="add-duty-box">
+                        <input type="text" placeholder="새로운 근무 이름 입력 (예: 탄약고)" style="flex: 1; margin: 0; background: #FFF;">
+                        <button class="btn-add">목록에 추가</button>
+                    </div>
+
+                    <div class="form-actions" style="margin-top: 24px;">
+                        <span class="status-text">순서를 변경한 후 반드시 저장을 눌러주세요.</span>
+                        <button type="button" class="btn-submit" style="background-color: #10B981;">설정 저장하기</button>
                     </div>
                 </div>
+            </div>
 
-                <div class="form-actions">
-                    <span class="status-text">입력하신 데이터를 바탕으로 자동 배정을 시작합니다.</span>
-                    <button type="button" id="runButton" class="btn-submit">근무표 생성하기</button>
+            <div id="page-help" class="page-section">
+                <div class="page-header">
+                    <h1>도움말 및 오류 대처</h1>
+                    <p>시스템 사용 중 발생하는 문제에 대한 해결 방법입니다.</p>
                 </div>
+                
+                <div class="help-placeholder">
+                    <p style="font-size: 16px; font-weight: 600; color: #475569; margin-bottom: 8px;">도움말 콘텐츠 준비 중</p>
+                    <p style="font-size: 14px;">여기에 에러 코드나 해결 가이드라인이 들어갈 예정입니다.</p>
+                </div>
+            </div>
 
-            </form>
         </div>
     </main>
 
+    <script>
+        function switchTab(targetId, clickedElement) {
+            // 1. 모든 사이드바 메뉴의 active 클래스 제거
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            
+            // 2. 클릭한 메뉴에 active 클래스 추가
+            clickedElement.classList.add('active');
+            
+            // 3. 모든 메인 페이지를 숨김
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // 4. 타겟 페이지만 보여줌
+            document.getElementById(targetId).classList.add('active');
+            
+            // 5. 맨 위로 스크롤
+            document.querySelector('.main-content').scrollTop = 0;
+        }
+    </script>
 </body>
 </html>
