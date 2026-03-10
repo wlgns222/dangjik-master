@@ -4,33 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dangjik Master - Admin</title>
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     <style>
         :root {
-            --sidebar-bg: #F9FAFB;
-            --main-bg: #FFFFFF;
-            --text-main: #111827;
-            --text-sub: #6B7280;
-            --border: #E5E7EB;
-            --accent: #0F172A;
-            --input-bg: #F3F4F6;
+            --sidebar-bg: #F9FAFB;      /* 사이드바 배경 */
+            --main-bg: #FFFFFF;         /* 메인 배경 */
+            --text-main: #111827;       /* 메인 텍스트 */
+            --text-sub: #6B7280;        /* 서브 텍스트 */
+            --border: #E5E7EB;          /* 구분선 */
+            --accent: #0F172A;          /* 포인트 컬러 */
+            --input-bg: #F3F4F6;        /* 인풋 배경 */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body {
-            font-family: 'Pretendard', sans-serif;
+            font-family: "Malgun Gothic", "맑은 고딕", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--main-bg);
             color: var(--text-main);
             display: flex;
             height: 100vh;
             overflow: hidden;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.03em; 
+            word-spacing: -0.05em;
         }
 
-        /* 1. 사이드바 너비 확장 (240px -> 280px) */
+        /* 사이드바 (너비만 280px로 확장) */
         .sidebar {
-            width: 280px; 
+            width: 280px;
             background-color: var(--sidebar-bg);
             border-right: 1px solid var(--border);
             display: flex;
@@ -38,10 +38,9 @@
             padding: 32px 0;
         }
         
-        /* 폰트 사이즈 업 */
         .sidebar-brand {
             padding: 0 24px 32px;
-            font-size: 24px; /* 20px -> 24px */
+            font-size: 20px;
             font-weight: 800;
             color: var(--accent);
             letter-spacing: -0.05em;
@@ -49,11 +48,11 @@
 
         .nav-menu { list-style: none; }
         .nav-item {
-            padding: 14px 24px; /* 클릭 영역 넓힘 */
-            margin: 4px 16px;
+            padding: 10px 24px;
+            margin: 4px 12px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 16px; /* 14px -> 16px */
+            font-size: 14px;
             font-weight: 500;
             color: var(--text-sub);
             transition: all 0.2s;
@@ -65,52 +64,51 @@
             font-weight: 600;
         }
 
-        /* 메인 콘텐츠 영역 */
+        /* 메인 콘텐츠 영역 (이전 핏으로 원상복구) */
         .main-content {
             flex: 1;
             overflow-y: auto;
             padding: 56px;
         }
 
-        /* 2. 글자가 커진 만큼 본문 영역 넓이 확장 (720px -> 800px) */
         .content-wrapper {
-            max-width: 800px;
+            max-width: 720px;
             margin: 0 auto;
         }
 
         .page-header {
-            margin-bottom: 64px;
+            margin-bottom: 56px;
         }
         .page-header h1 {
-            font-size: 36px; /* 32px -> 36px */
+            font-size: 32px;
             font-weight: 700;
             margin-bottom: 12px;
             letter-spacing: -0.03em;
         }
         .page-header p { 
             color: var(--text-sub); 
-            font-size: 18px; /* 16px -> 18px */
+            font-size: 16px; 
         }
 
         /* 섹션 구분 */
         .form-section {
-            margin-bottom: 64px;
+            margin-bottom: 56px;
         }
 
         .section-title {
-            font-size: 22px; /* 18px -> 22px */
+            font-size: 18px;
             font-weight: 600;
             margin-bottom: 24px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             border-bottom: 1px solid var(--border);
             padding-bottom: 16px;
         }
         
         .section-number {
             color: var(--text-sub);
-            font-size: 18px; /* 15px -> 18px */
+            font-size: 15px;
             font-weight: 500;
         }
 
@@ -118,7 +116,7 @@
         .input-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 28px;
+            gap: 24px;
         }
         .full-width {
             grid-column: 1 / -1;
@@ -127,12 +125,11 @@
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 12px; /* 라벨과 입력창 사이 여백 증가 */
+            gap: 10px;
         }
 
-        /* 3. 라벨 및 인풋창 텍스트 크기 확장 */
         label {
-            font-size: 15px; /* 13px -> 15px */
+            font-size: 13px;
             font-weight: 600;
             color: #374151;
         }
@@ -141,17 +138,17 @@
         input[type="date"], 
         input[type="file"] {
             width: 100%;
-            padding: 16px 20px; /* 입력창 내부 여백 증가로 시원하게 */
+            padding: 14px 16px;
             background-color: var(--input-bg);
             border: 1px solid transparent;
             border-radius: 8px;
             font-family: inherit;
-            font-size: 16px; /* 14px -> 16px */
+            font-size: 14px;
             color: var(--text-main);
             transition: all 0.2s ease;
         }
         
-        input[type="file"] { padding: 13px 16px; }
+        input[type="file"] { padding: 11px 16px; }
 
         input:hover { background-color: #E5E7EB; }
         input:focus {
@@ -165,42 +162,41 @@
         .badge-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
             margin-top: 8px;
         }
         .badge {
-            padding: 10px 18px;
+            padding: 8px 16px;
             background-color: var(--input-bg);
             border-radius: 6px;
-            font-size: 15px; /* 13px -> 15px */
+            font-size: 13px;
             font-weight: 600;
             color: var(--text-main);
         }
 
         /* 하단 고정 액션 바 */
         .form-actions {
-            margin-top: 48px;
-            padding-top: 40px;
+            margin-top: 40px;
+            padding-top: 32px;
             border-top: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding-bottom: 80px;
+            padding-bottom: 60px;
         }
 
         .status-text {
-            font-size: 16px; /* 14px -> 16px */
+            font-size: 14px;
             color: var(--text-sub);
         }
 
-        /* 4. 생성 버튼 크기 확장 */
         .btn-submit {
             background-color: var(--accent);
             color: #FFFFFF;
             border: none;
-            padding: 18px 40px; /* 버튼 큼직하게 변경 */
+            padding: 16px 36px;
             border-radius: 8px;
-            font-size: 18px; /* 15px -> 18px */
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: background-color 0.2s;
@@ -225,10 +221,10 @@
         <div class="content-wrapper">
             <div class="page-header">
                 <h1>새 근무표 작성</h1>
-                <p>근무표 생성을 위한 기초 데이터를 입력해 주세요.</p>
+                <p>이번 주차 근무표 생성을 위한 기초 데이터를 입력해 주세요.</p>
             </div>
 
-            <form id="wizardForm"> 
+            <form id="wizardForm">
                 
                 <div class="form-section">
                     <h2 class="section-title"><span class="section-number">01</span> 데이터 파일 업로드</h2>
@@ -302,7 +298,7 @@
 
                 <div class="form-section">
                     <h2 class="section-title"><span class="section-number">04</span> 적용될 배정 순서</h2>
-                    <p style="font-size: 16px; color: var(--text-sub); margin-bottom: 16px;">현재 시스템에 설정된 순서대로 배정됩니다. (설정 탭에서 변경 가능)</p>
+                    <p style="font-size: 14px; color: var(--text-sub); margin-bottom: 16px;">현재 시스템에 설정된 순서대로 배정됩니다. (설정 탭에서 변경 가능)</p>
                     <div class="badge-list">
                         <span class="badge">1. 위병부조장</span>
                         <span class="badge">2. 식기</span>
@@ -320,5 +316,6 @@
             </form>
         </div>
     </main>
+
 </body>
 </html>
