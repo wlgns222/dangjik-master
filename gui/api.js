@@ -49,7 +49,7 @@ async function runPipeline() {
             startDate: document.getElementById('startDate').value,
             endDate: document.getElementById('endDate').value,
             ldDate: document.getElementById('ldDate').value,
-            pxDate: document.getElementById('pxDate').value, // 추가된 PX병 일정
+            // pxDate: document.getElementById('pxDate').value, // 추가된 PX병 일정
             lastWorkers: {
                 sub: document.getElementById('lastSub').value,
                 dish: document.getElementById('lastDish').value,

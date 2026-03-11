@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- 2. 근무 규칙 설정 로직 ---
-    let activeDuties = ['위병부조장', '식기', '불침번', '초병 (선임/후임)', 'CCTV'];
+    let activeDuties = ['위병부조장', '식기', '초병 (선임/후임)', '불침번', 'CCTV'];
     let deletedDuties = [];
 
     const dutyEditList = document.getElementById('dutyEditList');
