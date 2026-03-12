@@ -147,7 +147,7 @@ input:focus, select:focus { outline: none; background-color: var(--main-bg); bor
     border-radius: 8px;
     transition: background-color 0.2s;
 }
-.settings-item.highlight { background-color: #F0FDF4; } /* 복구 시 하이라이트 효과 */
+.settings-item.highlight { background-color: #F0FDF4; }
 .duty-name { font-size: 15px; font-weight: 600; }
 
 .item-controls { display: flex; gap: 8px; }
@@ -180,3 +180,33 @@ input:focus, select:focus { outline: none; background-color: var(--main-bg); bor
 }
 .help-item { margin-bottom: 12px; }
 .help-item p { margin-top: 6px; font-size: 14px; line-height: 1.5; color: var(--text-main); }
+
+/* 💡 프로그램 사용 방법 영역 */
+.guide-section { margin-bottom: 56px; }
+.guide-title { font-size: 20px; font-weight: 700; color: var(--text-main); margin-bottom: 24px; }
+.guide-step { margin-bottom: 32px; }
+.guide-step-title { font-size: 16px; font-weight: 600; color: var(--accent); margin-bottom: 8px; }
+.guide-text { font-size: 15px; line-height: 1.6; color: var(--text-main); }
+
+/* CSV 양식 코드 박스 */
+.csv-container { margin-top: 20px; display: flex; flex-direction: column; gap: 16px; }
+.csv-box { background-color: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.csv-header { background-color: #E2E8F0; padding: 8px 16px; font-weight: 600; font-size: 14px; color: var(--accent); border-bottom: 1px solid var(--border); }
+.csv-body { padding: 16px; overflow-x: auto; }
+.csv-pre { font-family: monospace; font-size: 14px; color: var(--text-main); line-height: 1.5; margin: 0; }
+
+/* 직전 근무자 안내 박스 및 강조 텍스트 */
+.text-danger { color: #DC2626; font-size: 14px; }
+.info-box { background-color: var(--input-bg); padding: 16px; border-radius: 8px; margin-top: 12px; border: 1px solid var(--border); }
+.info-title { font-size: 15px; color: var(--accent); display: block; margin-bottom: 8px; font-weight: 700; }
+.info-list { padding-left: 20px; line-height: 1.8; font-size: 15px; color: var(--text-main); }
+
+/* ⚠️ 문제 해결 카드 간격 및 텍스트 오버라이드 */
+.help-card:last-child { margin-bottom: 0; } 
+.help-item { margin-bottom: 16px; }
+.help-item:last-child { margin-bottom: 0; }
+.help-item strong { color: #1E293B; font-size: 15px; display: inline-block; }
+
+/* 최하단 팁 박스 */
+.tip-box { margin-top: 20px; padding: 16px; background-color: var(--input-bg); border-radius: 8px; text-align: center; }
+.tip-text { font-size: 13px; color: #475569; margin: 0; }
