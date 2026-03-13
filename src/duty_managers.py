@@ -44,7 +44,7 @@ class SubGuardManager(Manager):
             event_hash = ds.date_event_hash.get(day)
             assigned_today = self.get_assigned_today(day)
             
-            next_worker = get_next_available(ptr_sub_guard, assigned_today, DUTY_ENUM.SUB_GUARD)
+            next_worker = get_next_available(ptr_sub_guard, assigned_today, DUTY_ENUM.SUB_GUARD, day)
             event_hash.get(SB_GUARD_KEY).append(next_worker)
 
 class DishManager(Manager):
@@ -62,7 +62,7 @@ class DishManager(Manager):
                 event_hash.get(DISH_KEY).append('72사단')
             else :
                 for _ in range(3) :
-                    next_worker = get_next_available(ptr_dish, assigned_today, DUTY_ENUM.DISH)
+                    next_worker = get_next_available(ptr_dish, assigned_today, DUTY_ENUM.DISH, day)
                     event_hash.get(DISH_KEY).append(next_worker)
 
 class NightManager(Manager):
@@ -76,7 +76,7 @@ class NightManager(Manager):
             event_hash = ds.date_event_hash.get(day)
             for key in NIGHT_WATCH_KEYS:
                 assigned_today = self.get_assigned_today(day)
-                next_worker = get_next_available(ptr_night, assigned_today, DUTY_ENUM.NIGHT)
+                next_worker = get_next_available(ptr_night, assigned_today, DUTY_ENUM.NIGHT, day)
                 event_hash.get(key).append(next_worker)
 
 class CCTVManager(Manager):
@@ -92,7 +92,7 @@ class CCTVManager(Manager):
                 assigned_today = self.get_assigned_today(day)
                 
                 for _ in range(3) :
-                    next_worker = get_next_available(ptr_cctv, assigned_today, DUTY_ENUM.CCTV)
+                    next_worker = get_next_available(ptr_cctv, assigned_today, DUTY_ENUM.CCTV, day)
                     event_hash.get(key).append(next_worker)
 
 class SentinelManager(Manager):
@@ -114,10 +114,10 @@ class SentinelManager(Manager):
                 
                 for key in SENTINEL_KEYS:
                     if "선임" in key:
-                        next_worker = get_next_available(ptr_st_sr, assigned_today, DUTY_ENUM.SENTINEL)
+                        next_worker = get_next_available(ptr_st_sr, assigned_today, DUTY_ENUM.SENTINEL, day)
                         event_hash.get(key).append(next_worker)
                     elif "후임" in key:
-                        next_worker = get_next_available(ptr_st_jr, assigned_today, DUTY_ENUM.SENTINEL)
+                        next_worker = get_next_available(ptr_st_jr, assigned_today, DUTY_ENUM.SENTINEL, day)
                         event_hash.get(key).append(next_worker)
 
 # ==========================================
