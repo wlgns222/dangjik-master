@@ -55,7 +55,8 @@ def duty_generator(start_date, end_date, ld_date, last_workers, event_list):
     
     # 3. 달력에 전역자, 열외자 도장 먼저 찍기 (가장 중요!)
     engine.exp_manager.runManage()
-
+    print(event_list)
+    print(DUTY_ENUM)
     # 4. 우선순위에 따라 배정 실행
     for event in event_list:
         if event == DUTY_ENUM.SUB_GUARD:
@@ -68,7 +69,7 @@ def duty_generator(start_date, end_date, ld_date, last_workers, event_list):
             engine.st_manager.runManage(last_workers.get('sr'), last_workers.get('jr'))
         elif event == DUTY_ENUM.CCTV:
             engine.cctv_manager.runManage(last_workers.get('cctv'))
-            
+        print("-"*20)
     # 5. CSV 파일 출력
     engine.export_result_as_file(output_path)
     #engine.export_result_as_file(download_path)
