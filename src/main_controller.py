@@ -29,7 +29,7 @@ def load_data(worker_file, exception_file, holiday_file):
     return worker_data, exceptions, holiday_data
 
 
-def duty_generator(start_date, end_date, ld_date, last_workers, event_list):
+def duty_generator(start_date, end_date, ld_date, last_workers, event_list, sort_criteria="입대일"):
     # 경로 설정
     current_dir = os.path.dirname(os.path.abspath(__file__))
     root_path = os.path.dirname(current_dir)
@@ -51,7 +51,7 @@ def duty_generator(start_date, end_date, ld_date, last_workers, event_list):
 
     # 2. 메인 엔진 가동 (데이터 스토어 적재 및 매니저 초기화 일괄 수행)
     date_range = (start_date, end_date)
-    engine = MainEngine(date_range, worker_data, exceptions)
+    engine = MainEngine(date_range, worker_data, exceptions, sort_criteria)
     
     # 3. 달력에 전역자, 열외자 도장 먼저 찍기 (가장 중요!)
     engine.exp_manager.runManage()
