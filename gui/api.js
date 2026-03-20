@@ -58,7 +58,8 @@ async function runPipeline() {
                 jr: document.getElementById('lastJr').value,
                 cctv: document.getElementById('lastCctv').value
             },
-            eventArr: eventArr 
+            eventArr: eventArr,
+            sortCriteria: document.getElementById('sortCriteria').value
         };
 
         // 유효성 검사 (입력값 누락 방지 가드 루틴)

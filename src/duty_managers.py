@@ -124,12 +124,12 @@ class SentinelManager(Manager):
 # 4. 전체 총괄 엔진 (메인 컨트롤러 연결부)
 # ==========================================
 class MainEngine:
-    def __init__(self, date_range, worker_data, exceptions):
+    def __init__(self, date_range, worker_data, exceptions, sort_criteria="입대일"):
         # 1. ds(data_store)의 초기화 함수들을 일괄 호출하여 메모리에 데이터 적재
         ds.load_date_list(date_range[0], date_range[1])
         ds.load_all_exp_keys(exceptions)
         ds.load_exp_list(exceptions)
-        ds.load_worker_list(worker_data)
+        ds.load_worker_list(worker_data, sort_criteria)
         ds.load_worker_info_map(worker_data)
         ds.init_date_event_hash()
         

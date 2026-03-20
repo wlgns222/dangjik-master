@@ -50,7 +50,7 @@ def load_exp_list(exp_data)->None:
     for e in exp_data: 
         exp_list.append(e)
 
-def load_worker_list(worker_data)->None:
+def load_worker_list(worker_data, sort_key="입대일")->None:
     global worker_list
     worker_list.clear()
     
@@ -59,13 +59,14 @@ def load_worker_list(worker_data)->None:
         name = w.get('이름', '알수없음')
         row_id = f"{sn} {name}"
 
+        validate_date(w.get('입대일'), '입대일', row_id) 
         validate_date(w.get('전입일'), '전입일', row_id)
         validate_date(w.get('전역일'), '전역일', row_id)
 
         for enum_val, col_name in WORKER_KEYS.items():
             w[col_name] = validate_yn(w.get(col_name), col_name, row_id)
             
-    worker_data.sort(key=lambda x: datetime.strptime(str(x['전입일']).strip(), DATE_FORMAT))
+    worker_data.sort(key=lambda x: datetime.strptime(str(x[sort_key]).strip(), DATE_FORMAT))
     for w in worker_data: 
         worker_list.append(w['군번'])
 
@@ -89,11 +90,11 @@ def init_date_event_hash()->None:
             today_hash.set(k, [])
         date_event_hash.set(day, today_hash)
 
-def load_all_data(date_range, worker_data, exp_data)->None:
+def load_all_data(date_range, worker_data, exp_data, sort_key="입대일")->None:
     start_date, end_date = date_range
     load_all_exp_keys(exp_data)
     load_date_list(start_date, end_date)
     load_exp_list(exp_data)
-    load_worker_list(worker_data)
+    load_worker_list(worker_data, sort_key)
     load_worker_info_map(worker_data)
     init_date_event_hash()
