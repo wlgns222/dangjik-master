@@ -27,8 +27,7 @@
  ┃ ┣ 📜 data_store.py      # 전역 데이터
  ┃ ┣ 📜 data_structures.py # 자료구조
  ┃ ┗ 📜 ... 
- ┣ 📜 server.py      # HTTP 로컬 서버 (GUI와 엔진 간의 통신 담당)
- ┗ 📜 dangjik-master.bat # 원클릭 실행 배치 파일
+ ┗ 📜 server.py      # HTTP 로컬 서버 (GUI와 엔진 간의 통신 담당)
 ```
 
 **데이터 처리 흐름 (Workflow)**
